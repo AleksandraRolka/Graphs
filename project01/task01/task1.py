@@ -26,20 +26,35 @@ def print_matrix(matrix):
     else:
         print("Niepoprawny zapis")
 
-# Z macierzy sąsiedztwa do listy sąsiedztwa
+
 def adj2list(matrix):
+	"""
+		Funkcja zamiany macierzy sąsiedztwa na liste sasiedztwa
+		matrix - macierz sasiedztwa
+	"""
     list_matrix = []
+	#przechodzimy petla po macierzy sasiedztwa
     for i in range(0, len(matrix)):
+		#dla kazdego wiersza tworzymy liste w list_matrix
         list_matrix.append([])
         for j in range(0, len(matrix[i])):
+			#jesli element macierzy sasiedztwa w wierszu jest rowny 1
+			#dolaczamy do wiersza list_matrix wartosc (numer kolumny + 1) (+1 aby indeksowanie sie zgadzalo)
             if matrix[i][j] == 1:
                 list_matrix[i].append(j+1)
     return list_matrix
 
-# Z macierzy sąsiedztwa do macierzy incydencji (kolejność kolumn jest inna niż w poleceniu zadania, ale same wyniki są ok)
+
 def adj2inc(matrix):
+	"""
+		Funkcja zamiany macierzy sasiedztwa na macierz incydyncji
+		matrix - macierz sasiedztwa
+	"""
     size = len(matrix)
     inc_matrix = [[] for i in range(0, size)]
+	#przechodzimy petla po trojkacie macierzy sasiedztwa, jesli element macierzy 
+	#rowny jest 1, w macierzy incydencji dodajemy kolumne, gdzie
+	#jedynkami sa elementy o numerze wiersza rownym indeksom macierzy sasiedztwa - i,j
     for i in range(0, size):
         for j in range(0, i + 1):
             if matrix[i][j] == 1:
@@ -50,22 +65,38 @@ def adj2inc(matrix):
                         inc_matrix[k].append(0)
     return inc_matrix
 
-# Z listy sąsiedztwa do macierzy sąsiedztwa
+
 def list2adj(graph_list):
+	"""
+		Funkcja zamiany listy sasiedztwa na macierz seek
+		graph_list - lista sasiedztwa
+	"""
     size = len(graph_list)
     adj_from_list = [[0 for i in range(0, size)] for i in range(0, size)]
+	#przechodzimy petla po liscie, tworzymy macierz sasiedztwa, 
+	#nadajemy wartosc 1 elementom macierzy sasiedztwa o indeksach rownych
+	#numerowi wiersza listy oraz wartosci aktualnego elementu pomniejszonego o jeden (aby zachowac indeksowanie)
     for i in range(0, size):
         for el in graph_list[i]: 
             adj_from_list[i][el-1] = 1
     return adj_from_list
 
-# Z listy sąsiedztwa do macierzy incydencji
+
 def list2inc(graph_list):
+	"""
+		Funkcja zamiany listy na macierz incydencji
+		graph_list - lista sasiedztwa
+	"""
     size = len(graph_list)
     matrix_inc_from_list = [[] for i in range(0, size)]
+	#przechodzimy petla po liscie
     for i in range(0, size):
         for el in graph_list[i]:
+			#aby nie powtarzac kolumn w macierzy incydencji
             if (el-1) <= i:
+				#dodajemy kolumne z zerami
+				#jedynkami w kolumnie sa elementy o indeksie numeru aktualnego 
+				#wiersza (i) oraz wartosci elementu (el-1) listy			
                 for k in range(0, size):
                     if k == i or k == (el-1):
                         matrix_inc_from_list[k].append(1)
@@ -73,11 +104,17 @@ def list2inc(graph_list):
                         matrix_inc_from_list[k].append(0)
     return matrix_inc_from_list
 
-# Z macierzy incydencji do macierzy sąsiedztwa
+
 def inc2adj(inc_matrix):
+	"""
+		Funkcja zamiany macierzy incydencji na macierz sasiedztwa
+		inc_matrix - macierz incydencji
+	"""
     rows = len(inc_matrix)
     columns = len(inc_matrix[0])
     adj_matrix = [[0 for i in range(0, rows)] for i in range(0, rows)]
+	#szukamy w kolumnie inc_matrix jedynki i zapisujemy numery wierszy tych elementow w dim
+	#nastepnie w adj_matrix elementy o indeksach z dim ustawiamy na 1
     for i in range(0, columns):
         dim =[]
         for j in range(0, rows):
@@ -88,11 +125,16 @@ def inc2adj(inc_matrix):
     return adj_matrix
     
 
-# Z macierzy incydencji do listy sąsiedztwa
 def inc2list(inc_matrix):
+	"""
+		Funkcja zamiany macierzy incydencji na liste sasiedztwa
+		inc_matrix - macierz incydencji
+	"""
     rows = len(inc_matrix)
     columns = len(inc_matrix[0])
     list_from_inc = [[] for i in range(0, rows)]
+	#szukamy w kolumnie inc_matrix jedynek i zapisujemy ich numery wierszy w dim
+	#nastepnie w elemencie listy o numerze indeksu zapisanym w dim zapisujemy drugi indeks powiekszony o jeden 
     for i in range(0, columns):
         dim =[]
         for j in range(0, rows):
