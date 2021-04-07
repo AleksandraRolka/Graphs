@@ -29,7 +29,7 @@ def main():
 
     elif graph_input_method == 'p':
 
-        filename = input("\nWskaż nazwę pliku z zapisaną macierzą sąsiedztwa/listą sąsiedztwa/macierzą incydencji:  ( np.: input1.txt )\n")
+        filename = input("\nWskaż nazwę pliku z zapisaną macierzą sąsiedztwa/listą sąsiedztwa/macierzą incydencji:  (np.: input1.txt)\n")
 
         with open(filename) as f:
             graph_repr = [[int(num) for num in line.split(' ')] for line in f]
@@ -52,21 +52,21 @@ def main():
         print_matrix(adj2inc(graph_repr))
         print()
         print_matrix(adj2list(graph_repr))
-        filename = input("\n\nPodaj nazwę pliku pod jaką chcesz zapisać reprezentację graficzną grafu: ( np.: graf )\n")
+        filename = input("\n\nPodaj nazwę pliku pod jaką chcesz zapisać reprezentację graficzną grafu: (np.: graf)\n")
         filename += '.png'
         draw_graph_from_adj_matrix(graph_repr, filename)
     elif repr == GraphRepr.INC:
         print_matrix(inc2adj(graph_repr))
         print()
         print_matrix(inc2list(graph_repr))
-        filename = input("\n\nPodaj nazwę pliku pod jaką chcesz zapisać reprezentację graficzną grafu: ( np.: graf )\n")
+        filename = input("\n\nPodaj nazwę pliku pod jaką chcesz zapisać reprezentację graficzną grafu: (np.: graf)\n")
         filename += '.png'
         draw_graph_from_incid_matrix(graph_repr, filename)
     elif repr == GraphRepr.LIST:
         print_matrix(list2adj(graph_repr))
         print()
         print_matrix(list2inc(graph_repr))
-        filename = input("\n\nPodaj nazwę pliku pod jaką chcesz zapisać reprezentację graficzną grafu: ( np.: graf )\n")
+        filename = input("\n\nPodaj nazwę pliku pod jaką chcesz zapisać reprezentację graficzną grafu: (np.: graf)\n")
         filename += '.png'
         draw_graph_from_adj_list(graph_repr,filename)
 
