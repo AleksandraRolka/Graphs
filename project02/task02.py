@@ -24,8 +24,8 @@ def randomize_graph(n, wierzcholki):
 
     total_attempts = liczba_krawedzi ** 2
     
-    while n or total_attempts: # dokonujemy n zamian pomiędzy krawędziami
-
+    while n and total_attempts: # dokonujemy n zamian pomiędzy krawędziam
+        
         # dokonujemy losowania krawędzi które zostaną zamienione
         dostepne_krawedzie = list(range(liczba_krawedzi))
         r.shuffle(dostepne_krawedzie)
@@ -54,4 +54,4 @@ def randomize_graph(n, wierzcholki):
     
         
 if __name__ == "__main__":
-    print(randomize_graph(15, [3, 3, 3, 3, 1, 1]))
+    print(randomize_graph(15, [2, 2, 2, 0]))
