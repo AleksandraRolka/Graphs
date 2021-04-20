@@ -7,7 +7,12 @@ import numpy as np
 import os, sys
 import copy
 
+''' 
+	FUNKCJE POMOCNICZE DO PROJEKTU 2 
+'''
 
+# funkcje wykorzystane w task04
+#############################################################################
 class HiddenPrints:
     def __enter__(self):
         self._original_stdout = sys.stdout
@@ -65,4 +70,6 @@ def is_bridge(edges, e):
 		return False
 	else:
 		return True
+		
+#############################################################################
 		
