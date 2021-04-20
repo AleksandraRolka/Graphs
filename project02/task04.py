@@ -1,19 +1,13 @@
 from utils import *
+from utils_proj02 import *
+
 from task01 import *
 from task02 import *
 from task03 import *
+
 import random as rnd
 import os, sys
-
-
-class HiddenPrints:
-    def __enter__(self):
-        self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, 'w')
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
-        sys.stdout = self._original_stdout
+import copy
 
 
 def gen_random_seq_of_even_num(n):
@@ -42,22 +36,48 @@ def gen_eulerian_seq(n):
 	seq = gen_random_seq_of_even_num(n)
 	while not( degree_seq(seq, len(seq)) ):
 		seq = gen_random_seq_of_even_num(n)
+	rnd.shuffle(seq)
 	
 	return seq
 	
 	
-def printMatrix(matrix):
-	 for row in matrix:
-            for el in row:
-                print(el, end='  ')
-            print()
-			
-			
-def largerCompIndex(graph):
-	# with HiddenPrints():
-	inx = printComponents(graph)
-	return inx
-		
+
+def find_next_node(edges, curr):
+	not_bridges = []
+	bridges = []
+	
+	for i in range(len(edges)):
+		if edges[i][0] == curr or edges[i][1] == curr:
+			if is_bridge(edges, edges[i]):
+				bridges.append(edges[i])
+			else:
+				not_bridges.append(edges[i])
+	if not_bridges:
+		if not_bridges[0][0] == curr:
+			return not_bridges[0][1]
+		else:
+			return not_bridges[0][0]
+	else: 
+		if bridges[0][0] == curr:
+			return bridges[0][1]
+		else:
+			return bridges[0][0]
+
+
+def rearange_matrix_by_seq(matrix, seq):
+	for i in range(len(seq)):
+		for j in range(len(seq)):
+			if sum(matrix[i]) == seq[i]:
+				pass
+			else:
+				for s in range(i+1,len(matrix)):
+					if sum(matrix[s]) == seq[i]:
+						swap_rows(matrix,i,s)
+						swap_columns(matrix,i,s)
+	
+	return matrix
+	
+	
 
 if __name__ == "__main__":
 	
@@ -66,35 +86,89 @@ if __name__ == "__main__":
 	while n < 3:
 		n =  int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
 	
-	seq = gen_eulerian_seq(n) 
+	seq = gen_eulerian_seq(n)
+	print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego):\n", seq)
+	print()
 	graph = seq_to_adj_matrix(seq)
-	# graph = randomize_graph(100,seq)
-	
-	print("\n__Wylosowane stopnie wierzchołków:\n", seq)
-	print("\n__Macierz sąsiedztwa wygenerowanego grafu:")
+	graph = rearange_matrix_by_seq(graph,seq)
 	printMatrix(graph)
+	print("\n__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
 	draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
-	print("\n__Graficzna wersja grafu zapisana w pliku 'images/eulerian_graph.png'.\n")
 
-	seq_cons_subgraph = []
+	
+	seq_subgraph = []
 	csg_labels = []
 	
 	for i in range(len(seq)):
 		if seq[i] != 0:
-			seq_cons_subgraph.append(seq[i])
+			seq_subgraph.append(seq[i])
 			csg_labels.append(i+1)
 	
+	# print()
+	# print('Spójna sekwencja : ', seq_subgraph)
+	# print('Etykiety spój sek: ',csg_labels)
 	
-	# print(seq_cons_subgraph)
-	# print(csg_labels)
 	
 	# spójna część grafu 'graph' ( graf graph bez wierzchołków izolowanych )
-	cons_subgraph = seq_to_adj_matrix(seq_cons_subgraph)
+	subgraph = matrix_remove_zeros(graph)
+
+
+	printMatrix(subgraph)
+	inc_list =  adj2list(subgraph)
+
+
+	edges = []
+	for i in range(len(inc_list)):
+		for j in range(len(inc_list[i])):
+			if (i+1 != inc_list[i][j]):
+				k = inc_list[i][j]
+				if ((i+1, k) not in edges) and (( k, i+1)  not in edges):
+					edges.append((i+1, k))
+				
+	
+	print(edges)
+	print()
+	visited_edges, visited_vertices = [], []
+	first = edges[0][0]
+	visited_edges.append(edges[0])
+	visited_vertices.append(edges[0][0])
+	visited_vertices.append(edges[0][1])
+	prev = edges[0][0]
+	curr = edges[0][1]
+	edges.remove(edges[0])
+
+	
+	while edges:
+		prev = curr
+		if len(edges) == 1:
+			visited_edges.append((prev, first))
+			visited_vertices.append(first)
+			break
+			
+		curr = find_next_node(edges, curr)
+
+		visited_edges.append((prev, curr))
+		visited_vertices.append(curr)
+		if (prev, curr) in edges:
+			edges.remove((prev, curr))
+		else:
+			edges.remove((curr,prev))
+
+	
+
+	for i in range(len(visited_vertices)-1):
+		print('{0} -- '.format(visited_vertices[i]), end='')
+	print(visited_vertices[len(visited_vertices)-1])
+
+	print("__Cykl Eulera w wygenerowanym grafie:")
+	for i in range(len(visited_vertices)-1):
+		print('{0} -- '.format(csg_labels[visited_vertices[i]-1]), end='')
+	print(csg_labels[0])
 
 		
-		
-		
-		
+	
+	
+
 		
 		
 		
