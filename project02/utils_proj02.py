@@ -24,10 +24,11 @@ class HiddenPrints:
 		
 
 def printMatrix(matrix):
-	 for row in matrix:
-            for el in row:
-                print(el, end='  ')
-            print()
+    for row in matrix:
+        print("    ",end='')
+        for el in row:
+            print(el, end='  ')
+        print("\n",end='')
 
 
 def swap_rows(matrix, i, j):
@@ -70,6 +71,20 @@ def is_bridge(edges, e):
 		return False
 	else:
 		return True
+		
+
+def rearange_matrix_by_seq(matrix, seq):
+	for i in range(len(seq)):
+		for j in range(len(seq)):
+			if sum(matrix[i]) == seq[i]:
+				pass
+			else:
+				for s in range(i+1,len(matrix)):
+					if sum(matrix[s]) == seq[i]:
+						swap_rows(matrix,i,s)
+						swap_columns(matrix,i,s)
+	
+	return matrix
 		
 #############################################################################
 		

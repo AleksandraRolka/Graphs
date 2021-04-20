@@ -64,59 +64,8 @@ def find_next_node(edges, curr):
 			return bridges[0][0]
 
 
-def rearange_matrix_by_seq(matrix, seq):
-	for i in range(len(seq)):
-		for j in range(len(seq)):
-			if sum(matrix[i]) == seq[i]:
-				pass
-			else:
-				for s in range(i+1,len(matrix)):
-					if sum(matrix[s]) == seq[i]:
-						swap_rows(matrix,i,s)
-						swap_columns(matrix,i,s)
-	
-	return matrix
-	
-	
-
-if __name__ == "__main__":
-	
-	n = 0
-	n =  int(input("\nPodaj liczbę n (>=3) wierzchołów, dla których utworzony zostanie graf eulerowski:\n"))
-	while n < 3:
-		n =  int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
-	
-	seq = gen_eulerian_seq(n)
-	print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego):\n", seq)
-	print()
-	graph = seq_to_adj_matrix(seq)
-	graph = rearange_matrix_by_seq(graph,seq)
-	printMatrix(graph)
-	print("\n__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
-	draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
-
-	
-	seq_subgraph = []
-	csg_labels = []
-	
-	for i in range(len(seq)):
-		if seq[i] != 0:
-			seq_subgraph.append(seq[i])
-			csg_labels.append(i+1)
-	
-	# print()
-	# print('Spójna sekwencja : ', seq_subgraph)
-	# print('Etykiety spój sek: ',csg_labels)
-	
-	
-	# spójna część grafu 'graph' ( graf graph bez wierzchołków izolowanych )
-	subgraph = matrix_remove_zeros(graph)
-
-
-	printMatrix(subgraph)
+def find_eulerian_cycle(graph):
 	inc_list =  adj2list(subgraph)
-
-
 	edges = []
 	for i in range(len(inc_list)):
 		for j in range(len(inc_list[i])):
@@ -124,10 +73,7 @@ if __name__ == "__main__":
 				k = inc_list[i][j]
 				if ((i+1, k) not in edges) and (( k, i+1)  not in edges):
 					edges.append((i+1, k))
-				
-	
-	print(edges)
-	print()
+
 	visited_edges, visited_vertices = [], []
 	first = edges[0][0]
 	visited_edges.append(edges[0])
@@ -152,17 +98,47 @@ if __name__ == "__main__":
 		if (prev, curr) in edges:
 			edges.remove((prev, curr))
 		else:
-			edges.remove((curr,prev))
+			edges.remove((curr,prev))	
+	
+	return visited_vertices
+	
 
 	
 
-	for i in range(len(visited_vertices)-1):
-		print('{0} -- '.format(visited_vertices[i]), end='')
-	print(visited_vertices[len(visited_vertices)-1])
+if __name__ == "__main__":
+	
+	n = 0
+	n =  int(input("\nPodaj liczbę n (>=3) wierzchołów, dla których utworzony zostanie graf eulerowski:\n"))
+	while n < 3:
+		n =  int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
+	
+	
+	seq = gen_eulerian_seq(n)
+	print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego): ", seq)
+	print("__Graf w postaci macierzy sąsiedztwa:")
+	graph = seq_to_adj_matrix(seq)
+	graph = rearange_matrix_by_seq(graph,seq)
+	printMatrix(graph)
+	print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
+	draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
 
-	print("__Cykl Eulera w wygenerowanym grafie:")
-	for i in range(len(visited_vertices)-1):
-		print('{0} -- '.format(csg_labels[visited_vertices[i]-1]), end='')
+	
+	seq_subgraph = []
+	csg_labels = []
+	
+	for i in range(len(seq)):
+		if seq[i] != 0:
+			seq_subgraph.append(seq[i])
+			csg_labels.append(i+1)
+	
+	# spójna część grafu 'graph' ( graf graph bez wierzchołków izolowanych )
+	subgraph = matrix_remove_zeros(graph)
+	cycle_list = find_eulerian_cycle(subgraph)
+
+
+	print("__Cykl Eulera wygenerowanego grafu:")
+	for i in range(len(cycle_list)-1):
+		print('{0} -- '.format(csg_labels[cycle_list[i]-1]), end='')
 	print(csg_labels[0])
 
 		
