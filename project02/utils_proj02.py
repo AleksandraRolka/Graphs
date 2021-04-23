@@ -53,25 +53,33 @@ def matrix_remove_zeros(matrix):
 
 def graph_from_edges(edges):
 	
-	size = max( max( edges, key = lambda t: t[0] )[0], max( edges, key = lambda t: t[1] )[1] ) + 1
+	size = max( max( edges, key = lambda t: t[0] )[0], max( edges, key = lambda t: t[1] )[1] )
 	matrix = [[ 0 for i in range(size)] for j in range(size)]
 	for e in edges:
-		matrix[e[0]][e[1]] = 1
-		matrix[e[1]][e[0]] = 1
+		matrix[e[0]-1][e[1]-1] = 1
+		matrix[e[1]-1][e[0]-1] = 1
 
 	return matrix
 
-	
+def components_list_and_max(graph):
+	with HiddenPrints():
+		max, comps = printComponents(graph)
+		return comps,max
+		
 def is_bridge(edges, e):
 	edge_list = copy.deepcopy(edges)
-	edge_list.remove(e)
 	graph = graph_from_edges(edge_list)
+	graph[e[0]-1][e[1]-1] = 0
+	graph[e[1]-1][e[0]-1] = 0
 	comp = components(graph)
-	if len(comp) == 1:
+	
+	if sum(comp) == len(comp):
 		return False
 	else:
 		return True
 		
+		
+	
 
 def rearange_matrix_by_seq(matrix, seq):
 	for i in range(len(seq)):

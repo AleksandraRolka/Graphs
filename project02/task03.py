@@ -57,7 +57,7 @@ def printComponents(graph):
         print()
     print("Największa składowa ma numer", comps.index(max(comps))+1)
     
-    return comps.index(max(comps))+1
+    return comps.index(max(comps))+1, comps
 
 def drawComponents(graph, filename):
     """

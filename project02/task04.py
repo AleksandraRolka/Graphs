@@ -41,8 +41,17 @@ def gen_eulerian_seq(n):
 	return seq
 	
 	
+def only_one_comp(graph):
+	comps,max = components_list_and_max(graph)
+	comps.remove(comps[max-1])
+	for x in comps:
+		if x > 1:
+			return False
+		
+	return True
+		
 
-def find_next_node(edges, curr):
+def find_next_node(edges, curr,first):
 	not_bridges = []
 	bridges = []
 	
@@ -52,20 +61,38 @@ def find_next_node(edges, curr):
 				bridges.append(edges[i])
 			else:
 				not_bridges.append(edges[i])
+
+	with_first_in_edges = [ e for e in edges if e[0]==first or e[1]==first]
+
 	if not_bridges:
-		if not_bridges[0][0] == curr:
-			return not_bridges[0][1]
+		inx = rnd.randint(0,(len(not_bridges)-1))
+		if not_bridges[inx][0] == curr:
+			return not_bridges[inx][1]
 		else:
-			return not_bridges[0][0]
+			return not_bridges[inx][0]
 	else: 
-		if bridges[0][0] == curr:
-			return bridges[0][1]
+		if len(with_first_in_edges) > 0:
+			inx = rnd.randint(0,(len(bridges)-1))
+			if bridges[inx][0] == curr:
+				return bridges[inx][1]
+			else:
+				return bridges[inx][0]
 		else:
-			return bridges[0][0]
+			if 1 < len(bridges):
+				inx = rnd.randint(1,(len(bridges)-1))
+				if bridges[inx][0] == curr:
+					return bridges[inx][1]
+				else:
+					return bridges[inx][0]
+			else:
+				False
+		
+
 
 
 def find_eulerian_cycle(graph):
-	inc_list =  adj2list(subgraph)
+	finish = False
+	inc_list =  adj2list(graph)
 	edges = []
 	for i in range(len(inc_list)):
 		for j in range(len(inc_list[i])):
@@ -73,56 +100,59 @@ def find_eulerian_cycle(graph):
 				k = inc_list[i][j]
 				if ((i+1, k) not in edges) and (( k, i+1)  not in edges):
 					edges.append((i+1, k))
-
+	
 	visited_edges, visited_vertices = [], []
-	first = edges[0][0]
+	(first,second) = edges[0]
 	visited_edges.append(edges[0])
-	visited_vertices.append(edges[0][0])
-	visited_vertices.append(edges[0][1])
-	prev = edges[0][0]
-	curr = edges[0][1]
+	visited_vertices.append(first)
+	visited_vertices.append(second)
+	prev = first
+	curr = second
 	edges.remove(edges[0])
-
 	
 	while edges:
 		prev = curr
 		if len(edges) == 1:
 			visited_edges.append((prev, first))
 			visited_vertices.append(first)
+			finish = True
 			break
-			
-		curr = find_next_node(edges, curr)
-
-		visited_edges.append((prev, curr))
-		visited_vertices.append(curr)
-		if (prev, curr) in edges:
-			edges.remove((prev, curr))
+		curr = find_next_node(edges, curr,first)
+		if curr == None:
+			break;
 		else:
-			edges.remove((curr,prev))	
+			visited_edges.append((prev, curr))
+			visited_vertices.append(curr)
+			if (prev, curr) in edges:
+				edges.remove((prev, curr))
+			else:
+				edges.remove((curr,prev))	
 	
+	if not finish:
+		find_eulerian_cycle(graph)
 	return visited_vertices
 	
 
 	
 
-if __name__ == "__main__":
+def task04():
 	
 	n = 0
 	n =  int(input("\nPodaj liczbę n (>=3) wierzchołów, dla których utworzony zostanie graf eulerowski:\n"))
 	while n < 3:
 		n =  int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
 	
-	
+
 	seq = gen_eulerian_seq(n)
-	print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego): ", seq)
-	print("__Graf w postaci macierzy sąsiedztwa:")
 	graph = seq_to_adj_matrix(seq)
 	graph = rearange_matrix_by_seq(graph,seq)
-	printMatrix(graph)
-	print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
-	draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
-
 	
+	while not only_one_comp(graph):
+		seq = gen_eulerian_seq(n)
+		graph = seq_to_adj_matrix(seq)
+		graph = rearange_matrix_by_seq(graph,seq)
+		
+
 	seq_subgraph = []
 	csg_labels = []
 	
@@ -130,11 +160,22 @@ if __name__ == "__main__":
 		if seq[i] != 0:
 			seq_subgraph.append(seq[i])
 			csg_labels.append(i+1)
-	
+
 	# spójna część grafu 'graph' ( graf graph bez wierzchołków izolowanych )
 	subgraph = matrix_remove_zeros(graph)
 	cycle_list = find_eulerian_cycle(subgraph)
 
+
+
+
+				
+	print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego): ", seq)
+	print("__Graf Eulera w postaci macierzy sąsiedztwa:")
+	printMatrix(graph)
+	print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
+	draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
+			
+	
 
 	print("__Cykl Eulera wygenerowanego grafu:")
 	for i in range(len(cycle_list)-1):
