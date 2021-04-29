@@ -1,10 +1,11 @@
 import numpy as np
 import random as rnd
 
+
 def random_with_edges(n, l):
     """
-    Funkcja zwraca wygenerowany losowo graf w postaci macierzy incydencji
-    z n wierzchołkami i l kwarędziami.
+        Funkcja zwraca wygenerowany losowo graf w postaci macierzy incydencji
+        z n wierzchołkami i l krawędziami.
     """
 
     if n <= 1:
@@ -22,10 +23,14 @@ def random_with_edges(n, l):
     # (wierzchołki numerujemy od 0 do n-1).
     avaliable_edges = [(i, j) for i in range(0, n) for j in range(i + 1, n)]
 
+    if l > len(avaliable_edges):
+        print("Za dużo krawędzi")
+        return
+
     # Dokonujemy przetasowania w liście możliwych połączeń.
     rnd.shuffle(avaliable_edges)
 
-    # Przechddzimy po kolumnach (krawędziach) macierzy incydencji
+    # Przechdzimy po kolumnach (krawędziach) macierzy incydencji
     # i uzupełniamy kolejne połączenia
     for i in range(0, l):
         edge = avaliable_edges[i]
@@ -37,13 +42,13 @@ def random_with_edges(n, l):
 
 def random_with_probability(n, p):
     """
-    Funkcja zwraca wygenerowany losowo graf w postaci macierz incydencji,
-    z n wierzchołkami i p prawdopodobienstwem, które określa ile jest szans
-    na to że pomidzy dwoma wierzchołkami istnieje krawędź.
+        Funkcja zwraca wygenerowany losowo graf w postaci macierz sąsiedztwa,
+        z n wierzchołkami i p prawdopodobienstwem, które określa ile jest szans
+        na to że pomiędzy dwoma wierzchołkami istnieje krawędź.
     """
 
     if p > 1 or p < 0:
-        print("Prawdopodieństwo nie mieści się w przedziale [0, 1].")
+        print("Prawdopodobieństwo nie mieści się w przedziale [0, 1].")
         return
 
     if n <= 1:
