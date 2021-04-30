@@ -1,13 +1,15 @@
 from utils import *
 
-def getRandomColor():
+
+def get_random_color():
     """
         Funkcja zwracająca losowy napis reprezentujący kolor RGB
     """
-    r = lambda: rnd.randint(0,255)
-    return '#%02X%02X%02X' % (r(),r(),r())
+    def r(): return rnd.randint(0, 255)
+    return '#%02X%02X%02X' % (r(), r(), r())
 
-def componentsR(nr, v, graph, comp):
+
+def components_r(nr, v, graph, comp):
     """
         Funkcja rekurencyjna przeszukująca graf wgłąb w poszukiwaniu
         kolejnych spójnych składowych
@@ -20,7 +22,8 @@ def componentsR(nr, v, graph, comp):
     for n in neighbours:
         if comp[n] == -1:
             comp[n] = nr
-            componentsR(nr, n, graph, comp)
+            components_r(nr, n, graph, comp)
+
 
 def components(graph):
     """
@@ -34,10 +37,11 @@ def components(graph):
         if comp[v] == -1:
             nr += 1
             comp[v] = nr
-            componentsR(nr, v, graph, comp) 
+            components_r(nr, v, graph, comp)
     return comp
 
-def printComponents(graph):
+
+def print_components(graph):
     """
         Funkcja wypisująca na ekran spójne składowe oraz numer największej
         składowej
@@ -56,10 +60,11 @@ def printComponents(graph):
                 print(v+1, end=" ")
         print()
     print("Największa składowa ma numer", comps.index(max(comps))+1)
-    
+
     return comps.index(max(comps))+1, comps
 
-def drawComponents(graph, filename):
+
+def draw_components(graph, filename):
     """
         Funkcja rysująca graf w taki sposób, że każda spójna składowa
         ma inny kolor
@@ -70,9 +75,9 @@ def drawComponents(graph, filename):
     colors = []
     # Pętla przydzielająca kolor każdej składowej
     for i in range(max(comp)):
-        color = getRandomColor()
+        color = get_random_color()
         while color in colors:
-            color = getRandomColor()
+            color = get_random_color()
         colors.append(color)
     # Pętla przydzielająca każdemu wierzchołkowi odpowiedni kolor
     # (wskazujący, do której składowej przynależy)
@@ -80,18 +85,19 @@ def drawComponents(graph, filename):
         colors_map.append(colors[comp[i]-1])
     draw_graph_from_adj_matrix(graph, filename, colors_map)
 
+
 if __name__ == "__main__":
 
     filename = "graph_representations/seq.txt"
-    graph = readGraphFromFile(filename)
+    #graph = read_graph_from_file(filename)
 
     #graph = random_with_probability(10, 0.15)
-    #graph = random_with_edges(15, 14)
-    
-    (repr, graph) = reprRecognizer(graph)
+    graph = random_with_edges(30, 20)
+
+    (repr, graph) = repr_recognizer(graph)
     print_graph(graph)
     print()
- 
+
     if repr == GraphRepr.INC:
         graph = inc2adj(graph)
     elif repr == GraphRepr.LIST:
@@ -99,5 +105,5 @@ if __name__ == "__main__":
     elif repr == GraphRepr.SEQ:
         graph = seq_to_adj_matrix(graph)
     if repr != GraphRepr.OTHER:
-        printComponents(graph)
-        drawComponents(graph, "test")
+        print_components(graph)
+        draw_components(graph, "test")
