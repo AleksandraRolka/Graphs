@@ -3,7 +3,7 @@ import numpy as np
 from utils import adj2inc
 from task01 import seq_to_adj_matrix
 
-def randomize_graph(n, wierzcholki):
+def randomize_graph(n, sequence):
 
     """
     Funckja randomizująca graf prosty o zadanych wierzchołkach.
@@ -13,24 +13,24 @@ def randomize_graph(n, wierzcholki):
     """
 
     # sprawdzamy czy z podanego ciagu można utworzyć graf
-    matrix = seq_to_adj_matrix(wierzcholki)
+    matrix = seq_to_adj_matrix(sequence)
 
     if matrix is None:
         return
 
     # transponoujemy macierz incydencji bo chcemy żeby krawędzie były przedstawione jako wiersze
     matrix = np.transpose(np.array(adj2inc(matrix)))
-    liczba_krawedzi = len(matrix)
+    number_of_edges = len(matrix)
 
-    total_attempts = liczba_krawedzi ** 2
+    max_attempts = number_of_edges ** 2
     
-    while n and total_attempts: # dokonujemy n zamian pomiędzy krawędziam
+    while n and max_attempts: # dokonujemy n zamian pomiędzy krawędziam
         
         # dokonujemy losowania krawędzi które zostaną zamienione
-        dostepne_krawedzie = list(range(liczba_krawedzi))
-        r.shuffle(dostepne_krawedzie)
-        ab = dostepne_krawedzie.pop()
-        cd = dostepne_krawedzie.pop()
+        avaliable_edges = list(range(number_of_edges))
+        r.shuffle(avaliable_edges)
+        ab = avaliable_edges.pop()
+        cd = avaliable_edges.pop()
 
         # pobranie indeksów wierzchołków na wylosowanych krawędziach
         a, b = [i for i, e in enumerate(matrix[ab]) if e == 1]
@@ -48,7 +48,7 @@ def randomize_graph(n, wierzcholki):
             
             n -= 1
             
-        total_attempts -= 1
+        max_attempts -= 1
 
     return np.transpose(matrix)
     
