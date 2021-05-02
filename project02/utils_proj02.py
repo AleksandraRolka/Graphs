@@ -1,22 +1,21 @@
-from utils import *
-from task01 import *
-from task02 import *
-from task03 import *
-
+from task03 import print_components
 import numpy as np
-import os
 import sys
+import os
 import copy
 
 ''' 
-	FUNKCJE POMOCNICZE DO PROJEKTU 2 
+    FUNKCJE POMOCNICZE DO PROJEKTU 2 
 '''
 
 # funkcje wykorzystane w task04
-#############################################################################
-
+###################################################################################################
 
 class HiddenPrints:
+    '''
+        klasa pozwala na uruchamianie funkcji 
+        z pominięciem funkcji print wewnątrz nich
+    '''
     def __enter__(self):
         self._original_stdout = sys.stdout
         sys.stdout = open(os.devnull, 'w')
@@ -24,9 +23,16 @@ class HiddenPrints:
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()
         sys.stdout = self._original_stdout
-
-
+    
+    
+        
 def print_matrix(matrix):
+    '''
+        wypisuje maciersz w formie:
+        np. 0  1  1
+            1  0  1
+            1  1  0         
+    '''
     for row in matrix:
         print("    ", end='')
         for el in row:
@@ -34,20 +40,13 @@ def print_matrix(matrix):
         print("\n", end='')
 
 
-def swap_rows(matrix, i, j):
-    temp = matrix[i][:]
-    matrix[i][:] = matrix[j][:]
-    matrix[j][:] = temp
-    return matrix
-
-
-def swap_columns(matrix, i, j):
-    for l in matrix:
-        l[i], l[j] = l[j], l[i]
-    return matrix
-
 
 def matrix_remove_zeros(matrix):
+    '''
+        usuwa z macierzy sąsiedztwa 
+        wiersze i kolumny 
+        zawierające same zera
+    '''
     data = np.array(copy.deepcopy(matrix))
     data = data[~np.all(data == 0, axis=1)]
     idx = np.argwhere(np.all(data[..., :] == 0, axis=0))
@@ -55,38 +54,44 @@ def matrix_remove_zeros(matrix):
     return data
 
 
-def graph_from_edges(edges):
-
-    size = max(max(edges, key=lambda t: t[0])[
-               0], max(edges, key=lambda t: t[1])[1])
-    matrix = [[0 for i in range(size)] for j in range(size)]
-    for e in edges:
-        matrix[e[0]-1][e[1]-1] = 1
-        matrix[e[1]-1][e[0]-1] = 1
-
-    return matrix
-
 
 def components_list_and_max(graph):
+    '''
+        funkcja zwraca indeks maksymalnej składowej 
+        oraz listę wszystkich składowych
+        pomijając print-y funkcji 'print_components'
+    '''
     with HiddenPrints():
         max, comps = print_components(graph)
         return comps, max
 
 
-def is_bridge(edges, e):
-    edge_list = copy.deepcopy(edges)
-    graph = graph_from_edges(edge_list)
-    graph[e[0]-1][e[1]-1] = 0
-    graph[e[1]-1][e[0]-1] = 0
-    comp = components(graph)
 
-    if sum(comp) == len(comp):
-        return False
-    else:
-        return True
+def swap_rows(matrix, i, j):
+    '''
+        zamienia w macierzy wiersze i z j
+    '''
+    temp = matrix[i][:]
+    matrix[i][:] = matrix[j][:]
+    matrix[j][:] = temp
+    return matrix
 
+def swap_columns(matrix, i, j):
+    '''
+        zamienia w macierzy kolumny i z j
+    '''
+    for l in matrix:
+        l[i], l[j] = l[j], l[i]
+    return matrix
+    
 
 def rearange_matrix_by_seq(matrix, seq):
+    '''
+        dostosowywuje kolejności wierszy, kolumn grafu 
+        do kolejności stopni wierzchołków podanego ciągu
+    '''
+    print_matrix(matrix)
+    print(seq)
     for i in range(len(seq)):
         for j in range(len(seq)):
             if sum(matrix[i]) == seq[i]:
@@ -99,4 +104,4 @@ def rearange_matrix_by_seq(matrix, seq):
 
     return matrix
 
-#############################################################################
+###################################################################################################

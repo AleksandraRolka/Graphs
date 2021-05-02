@@ -1,17 +1,16 @@
-from utils import *
-from utils_proj02 import *
-
-from task01 import *
-from task02 import *
-from task03 import *
-
 import random as rnd
-import os
 import sys
-import copy
+from task01 import degree_seq, seq_to_adj_matrix
+from task03 import print_components
+from utils import draw_graph_from_adj_matrix
+from utils_proj02 import * 
+
 
 
 def gen_random_seq_of_even_num(n):
+    '''
+        generuje ciąg losowych liczb parzystych
+    '''
     deg = []
     seq = []
     k = int((n + 1) // 2) * 2
@@ -33,103 +32,77 @@ def gen_random_seq_of_even_num(n):
     return seq
 
 
+
 def gen_eulerian_seq(n):
+    '''
+        generuje losowy ciąg graficzny grafu Eulera
+        ( - degree_seq - sprawdza czy ciąg jest graficzny )
+        ( - gen_random_seq_of_even_num - generuje losowy ciąg parzystych liczb )
+    '''
     seq = gen_random_seq_of_even_num(n)
     while not(degree_seq(seq, len(seq))):
         seq = gen_random_seq_of_even_num(n)
+    # randomizacja kolejności stopni wierzchołków
     rnd.shuffle(seq)
-
     return seq
 
 
+
 def only_one_comp(graph):
+    '''
+        sprawdza czy graf zawiera tylko jedną spójną składową 
+        ( z pomięciem wierzchołków izolowanych )
+    '''
     comps, max = components_list_and_max(graph)
     comps.remove(comps[max-1])
     for x in comps:
         if x > 1:
             return False
-
     return True
 
 
-def find_next_node(edges, curr, first):
-    not_bridges = []
-    bridges = []
-
-    for i in range(len(edges)):
-        if edges[i][0] == curr or edges[i][1] == curr:
-            if is_bridge(edges, edges[i]):
-                bridges.append(edges[i])
-            else:
-                not_bridges.append(edges[i])
-
-    with_first_in_edges = [e for e in edges if e[0] == first or e[1] == first]
-
-    if not_bridges:
-        inx = rnd.randint(0, (len(not_bridges)-1))
-        if not_bridges[inx][0] == curr:
-            return not_bridges[inx][1]
-        else:
-            return not_bridges[inx][0]
-    else:
-        if len(with_first_in_edges) > 0:
-            inx = rnd.randint(0, (len(bridges)-1))
-            if bridges[inx][0] == curr:
-                return bridges[inx][1]
-            else:
-                return bridges[inx][0]
-        else:
-            if 1 < len(bridges):
-                inx = rnd.randint(1, (len(bridges)-1))
-                if bridges[inx][0] == curr:
-                    return bridges[inx][1]
-                else:
-                    return bridges[inx][0]
-            else:
-                False
 
 
 def find_eulerian_cycle(graph):
-    finish = False
-    inc_list = adj2list(graph)
-    edges = []
-    for i in range(len(inc_list)):
-        for j in range(len(inc_list[i])):
-            if (i+1 != inc_list[i][j]):
-                k = inc_list[i][j]
-                if ((i+1, k) not in edges) and ((k, i+1) not in edges):
-                    edges.append((i+1, k))
+    '''
+        zdajduje cykl Eulera w grafie Eulera
+    '''
+    # liczba wierzchołków
+    n = len(graph)    
+    # inicjalizacja pustego stosu oraz pustego cyklu
+    stack = list() 
+    cycle = list() 
+    # początkowa wartość bieżącego wierzchołka jako indeksu pierwszego wierzchołka
+    curr = 0
+  
+    # pętla iteruje dopóki stos nie jest pusty lub obecna krawędź ma sąsiada
+    while(stack != [] or sum(graph[curr]) != 0): 
+        # jeśli bieżący wierzchołek nie ma żadnego sąsiada
+        # dodaje go do ścieżki, a ostatni element stosu ustawia jako bieżący, 
+        # jednocześnie usuwając go ze stosu 
+        if (sum(graph[curr]) == 0): 
+            cycle.append(curr + 1) 
+            curr = stack.pop(-1) 
 
-    visited_edges, visited_vertices = [], []
-    (first, second) = edges[0]
-    visited_edges.append(edges[0])
-    visited_vertices.append(first)
-    visited_vertices.append(second)
-    prev = first
-    curr = second
-    edges.remove(edges[0])
+        # jeśli bieżący wierzchołek ma co najmniej jeden sąsiedni wierzchołek
+        # dodaje bieżący wierzchołek do stosu
+        # usuwa krawędź między bieżącym a sąsiednim wierzchołkiem
+        # ustawia bieżący wierzchołek (curr) na sąsiedni wierzchołek
+        else: 
+            for i in range(n): 
+                if graph[curr][i] == 1: 
+                    stack.append(curr) 
+                    graph[curr][i] = 0
+                    graph[i][curr] = 0
+                    curr = i 
+                    break
+    
+    # dodaje do cyklu ostatni bieżący wierzchołek (jest to pierwszy wierzchołek cyklu)
+    cycle.append(curr + 1)
+    
+    return cycle
 
-    while edges:
-        prev = curr
-        if len(edges) == 1:
-            visited_edges.append((prev, first))
-            visited_vertices.append(first)
-            finish = True
-            break
-        curr = find_next_node(edges, curr, first)
-        if curr == None:
-            break
-        else:
-            visited_edges.append((prev, curr))
-            visited_vertices.append(curr)
-            if (prev, curr) in edges:
-                edges.remove((prev, curr))
-            else:
-                edges.remove((curr, prev))
 
-    if not finish:
-        find_eulerian_cycle(graph)
-    return visited_vertices
 
 
 def task04():
@@ -141,7 +114,7 @@ def task04():
         n = int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
 
     seq = gen_eulerian_seq(n)
-    graph = seq_to_adj_matrix(seq)
+    graph = seq_to_adj_matrix(seq)  
     graph = rearange_matrix_by_seq(graph, seq)
 
     while not only_one_comp(graph):
@@ -162,12 +135,19 @@ def task04():
     cycle_list = find_eulerian_cycle(subgraph)
 
     print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego): ", seq)
-    print("__Graf Eulera w postaci macierzy sąsiedztwa:")
-    print_matrix(graph)
-    print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
-    draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
+    # print("__Graf Eulera w postaci macierzy sąsiedztwa:")
+    # print_matrix(graph)
 
     print("__Cykl Eulera wygenerowanego grafu:")
     for i in range(len(cycle_list)-1):
         print('{0} -- '.format(csg_labels[cycle_list[i]-1]), end='')
     print(csg_labels[0])
+    
+    print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
+    draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
+
+
+
+if __name__ == "__main__":
+
+    task04()
