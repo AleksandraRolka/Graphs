@@ -10,7 +10,6 @@ import sys
 class LackOfNecessaryArg(Exception):
     pass
 
-
 def main():
 
     args = sys.argv[1:]
@@ -202,7 +201,7 @@ UWAGI:
                             print('\n\nPodany graf jest grafem hamiltonowskim.\nZnaleziony cykl Hamiltona: ', cycle)
                         else:
                             print('Zadany graf nie posiada cyklu Hamiltona.')
-							
+                            
                         if filename_out is not None:
                             draw_graph_from_adj_list(graph, filename_out)
                             print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
