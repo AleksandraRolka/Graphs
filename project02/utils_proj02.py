@@ -34,7 +34,7 @@ def print_matrix(matrix):
             1  1  0         
     '''
     for row in matrix:
-        print("    ", end='')
+        # print("    ", end='')
         for el in row:
             print(el, end='  ')
         print("\n", end='')
@@ -90,8 +90,7 @@ def rearange_matrix_by_seq(matrix, seq):
         dostosowywuje kolejności wierszy, kolumn grafu 
         do kolejności stopni wierzchołków podanego ciągu
     '''
-    print_matrix(matrix)
-    print(seq)
+	
     for i in range(len(seq)):
         for j in range(len(seq)):
             if sum(matrix[i]) == seq[i]:

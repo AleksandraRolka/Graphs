@@ -5,7 +5,7 @@ import math
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from task01 import *
+import task01
 
 PI = math.pi
 # Funkcje z projektu pierwszego (modyfikacje w funkcjach draw_graph, print_graph, reprRecognizer) oraz dodatkowo:
@@ -136,7 +136,7 @@ def repr_recognizer(graph):
                 repr = GraphRepr.OTHER
     # Jeśli graph jest tablicą 1D int-ów to mamy do czynienia z ciągiem graficznym
     if isinstance(graph[0], int):
-        repr = GraphRepr.SEQ if degree_seq(
+        repr = GraphRepr.SEQ if task01.degree_seq(
             graph, len(graph)) else GraphRepr.OTHER
     # Funkcja zwraca też listę graph, żeby ta była odpowiednio przekształcona w przypadku ciągu graficznego
     return (repr, graph) if repr else (GraphRepr.OTHER, graph)
