@@ -8,7 +8,7 @@ def random_k_regular_graph(n, k):
         Funkcja zwraca zrandomizowany graf w postaci macierzy incydencji.
     """
     seq = [ k for i in range(n) ]
-    return randomize_graph(100, seq)
+    return randomize_graph(100, seq)[1]
 
 
 if __name__ == "__main__":
