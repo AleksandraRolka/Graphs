@@ -2,6 +2,7 @@ import random as r
 import numpy as np
 from utils import adj2inc
 from task01 import seq_to_adj_matrix
+import copy
 
 def randomize_graph(n, sequence):
 
@@ -19,6 +20,7 @@ def randomize_graph(n, sequence):
         return
 
     # transponoujemy macierz incydencji bo chcemy żeby krawędzie były przedstawione jako wiersze
+    org_matrix = copy.deepcopy(np.array(adj2inc(matrix)))
     matrix = np.transpose(np.array(adj2inc(matrix)))
     number_of_edges = len(matrix)
 
@@ -50,8 +52,12 @@ def randomize_graph(n, sequence):
             
         max_attempts -= 1
 
-    return np.transpose(matrix)
+    return org_matrix,np.transpose(matrix)
     
         
 if __name__ == "__main__":
-    print(randomize_graph(15, [2, 2, 2, 0]))
+    
+    org_matrix, randomize_matrix = randomize_graph(15, [2, 2, 2, 0, 3, 5, 2])
+    print(org_matrix)
+    print()
+    print(randomize_matrix)
