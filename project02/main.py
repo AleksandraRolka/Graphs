@@ -9,9 +9,6 @@ import sys
 
 class LackOfNecessaryArg(Exception):
     pass
-    
-
-
 
 
 def main():
