@@ -102,17 +102,11 @@ def find_eulerian_cycle(graph):
     
     return cycle
 
-
-
-
-def task04():
-
-    n = 0
-    n = int(input(
-        "\nPodaj liczbę n (>=3) wierzchołów, dla których utworzony zostanie graf eulerowski:\n"))
-    while n < 3:
-        n = int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
-
+def gen_random_eulerian_graph_find_cycle(n):
+    '''
+        Funkcja generuje losowy graf Eulera o n wierzchołkach 
+        i znajduje w nim ścieżkę Eulera
+    '''
     seq = gen_eulerian_seq(n)
     graph = seq_to_adj_matrix(seq)  
     graph = rearange_matrix_by_seq(graph, seq)
@@ -124,6 +118,7 @@ def task04():
 
     seq_subgraph = []
     csg_labels = []
+    cycle = []
 
     for i in range(len(seq)):
         if seq[i] != 0:
@@ -133,21 +128,35 @@ def task04():
     # spójna część grafu 'graph' ( graf graph bez wierzchołków izolowanych )
     subgraph = matrix_remove_zeros(graph)
     cycle_list = find_eulerian_cycle(subgraph)
-
-    print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego): ", seq)
-    # print("__Graf Eulera w postaci macierzy sąsiedztwa:")
-    # print_matrix(graph)
-
-    print("__Cykl Eulera wygenerowanego grafu:")
-    for i in range(len(cycle_list)-1):
-        print('{0} -- '.format(csg_labels[cycle_list[i]-1]), end='')
-    print(csg_labels[0])
     
-    print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png\n")
-    draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
+    for i in range(len(cycle_list)):
+
+        cycle.append(csg_labels[cycle_list[i]-1])
+
+
+    return seq, graph, cycle
+
 
 
 
 if __name__ == "__main__":
 
-    task04()
+    n = 0
+    n = int(input(
+        "\nPodaj liczbę n (>=3) wierzchołów, dla których utworzony zostanie graf eulerowski:\n"))
+    while n < 3:
+        n = int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
+
+    seq, graph, cycle = gen_random_eulerian_graph_find_cycle(n)
+
+    print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego): ", seq)
+    print("__Graf Eulera w postaci macierzy sąsiedztwa:")
+    print_matrix(graph)
+
+    print("__Cykl Eulera wygenerowanego grafu:")
+    for i in range(len(cycle)-1):
+        print('{0} -- '.format(cycle[i]), end='')
+    print(cycle[len(cycle)-1])
+    
+    print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png.")
+    draw_graph_from_adj_matrix(graph, "eulerian_graph.png")
