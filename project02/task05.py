@@ -1,4 +1,5 @@
 from task02 import randomize_graph
+from utils import inc2adj
 
 def random_k_regular_graph(n, k):
     """
@@ -13,4 +14,4 @@ def random_k_regular_graph(n, k):
 
 if __name__ == "__main__":
     print("Zad 5.")
-    print(random_k_regular_graph(7, 3))
+    print(random_k_regular_graph(6, 2))

@@ -27,7 +27,7 @@ def randomize_graph(n, sequence):
     max_attempts = number_of_edges ** 2
     
     while n and max_attempts: # dokonujemy n zamian pomiędzy krawędziam
-        
+
         # dokonujemy losowania krawędzi które zostaną zamienione
         avaliable_edges = list(range(number_of_edges))
         r.shuffle(avaliable_edges)
@@ -38,10 +38,28 @@ def randomize_graph(n, sequence):
         a, b = [i for i, e in enumerate(matrix[ab]) if e == 1]
         c, d = [i for i, e in enumerate(matrix[cd]) if e == 1]
 
-        # sprawdzamy czy wierzchołki nie zostały powtórzone
+        is_allowed_to_swap = True
+
         if a == c or a == d or b == c or b == d:
-            pass
-        else:
+            is_allowed_to_swap = False
+
+        # sprawdzamy czy wierzchołki nie zostały powtórzone
+        for edge in matrix:
+            x, y = [i for i, e in enumerate(edge) if e == 1]
+            if a == x and d == y:
+                is_allowed_to_swap = False
+                break
+            if a == y and d == x:
+                is_allowed_to_swap = False
+                break
+            if b == y and c == x:
+                is_allowed_to_swap = False
+                break
+            if b == x and c == y:
+                is_allowed_to_swap = False
+                break
+
+        if is_allowed_to_swap:
             # zamiana krawędzi
             matrix[ab][b] = 0
             matrix[ab][d] = 1
@@ -49,7 +67,7 @@ def randomize_graph(n, sequence):
             matrix[cd][b] = 1
             
             n -= 1
-            
+
         max_attempts -= 1
 
     return org_matrix,np.transpose(matrix)
