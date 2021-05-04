@@ -148,11 +148,10 @@ UWAGI:
                         elif repr == GraphRepr.SEQ:
                             graph = seq_to_adj_matrix(graph)
                         if repr != GraphRepr.OTHER:
-                            print_components(graph)
-                            
-                        if filename_out is not None:
-                            draw_components(graph, filename_out)
-                            print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                            print_components(graph)                            
+                            if filename_out is not None:
+                                draw_components(graph, filename_out)
+                                print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
             # ------------------------------------------------------------------------------------------------------------------------------    
                 elif args[0] == '-random_eulerian_graph':
                     if n is None:
