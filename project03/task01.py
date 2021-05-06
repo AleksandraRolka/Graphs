@@ -6,9 +6,9 @@ import random as rnd
 def set_random_weight(adj_matrix, a, b):
 
     for i in range(len(adj_matrix)):
-        for j in range(len(adj_matrix)):
+        for j in range(i, len(adj_matrix)):
             if adj_matrix[i][j] == 1:
-                adj_matrix[i][j] = rnd.randint(a, b)
+                adj_matrix[i][j] = adj_matrix[j][i] = rnd.randint(a, b)
                 
     return adj_matrix
 
