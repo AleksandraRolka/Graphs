@@ -2,7 +2,6 @@ from enum import Enum
 import numpy as np
 import random as rnd
 import math
-import networkx as nx
 import matplotlib.pyplot as plt
 
 import task01
