@@ -209,7 +209,7 @@ def draw_graph(nodes_num, edges, fname, colors = None):
         # domyślnie kolejne wierzchołki jako ich etykiety mają kolejne liczby naturalne
         G.add_nodes_from(list(range(1, nodes_num + 1)))
         # dodanie listy krawędzi
-        for i in range(0,len(edges)-1):
+        for i in range(len(edges)):
             G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2])
 
     for i in range(nodes_num):
