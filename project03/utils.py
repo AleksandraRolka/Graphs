@@ -215,7 +215,7 @@ def draw_graph(nodes_num, edges, fname, colors = None):
         # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
         positions.update({(i + 1): (Sx + r * math.cos(i * alpha - PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
 
-    positions = nx.planar_layout(G)
+    # positions = nx.spring_layout(G)
 
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     fig = plt.figure()
@@ -303,10 +303,10 @@ def draw_graph_with_mst(g, mst, fname, colors = None):
         G.add_nodes_from(list(range(1, nodes_num + 1)))
         # dodanie listy krawędzi
         for i in range(len(edges)):
-            G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2], width=2, color='b')
+            G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2], width=2, color='black', fontsize=12)
 
         for i in range(len(mst_edges)):
-            G.add_edge(mst_edges[i][0], mst_edges[i][1], weight=mst_edges[i][2], width=8, color='r')
+            G.add_edge(mst_edges[i][0], mst_edges[i][1], weight=mst_edges[i][2], width=8, color='r', fontsize=20)
 
     for i in range(nodes_num):
         # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
@@ -314,17 +314,15 @@ def draw_graph_with_mst(g, mst, fname, colors = None):
 
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     widths = list(nx.get_edge_attributes(G, 'width').values())
+    edge_colors = list(nx.get_edge_attributes(G, 'color').values())
 
-    positions = nx.planar_layout(G)
+    # positions = nx.spring_layout(G)
 
     fig = plt.figure()
     nx.draw(G, pos=positions, node_size=nodesize, node_color=colors,
-            font_size= nodesize / 85, with_labels=True, width=widths)
+            font_size= nodesize / 85, with_labels=True, width=widths, edge_color=edge_colors)
 
     labels = nx.get_edge_attributes(G, 'weight')
-    edge_labels_positions = positions.copy()
-    for i in range(nodes_num):
-        edge_labels_positions.update({(i + 1) : (3, 3)})
     nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=20)
     
     plt.draw()
