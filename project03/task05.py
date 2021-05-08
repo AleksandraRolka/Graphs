@@ -2,7 +2,7 @@ from task01 import *
 from utils import *
 import numpy as np
 
-def kruskal_algorhitm(graph):
+def kruskal_algorithm(graph):
 
     n = len(graph[0]) # get number of vertices
     edges_in_tree = n - 1
@@ -64,8 +64,8 @@ def dfs_search(graph, u, x, visited):
 
 
 if __name__ == "__main__":
-    g = generate_random_coherent_weighted_graph(200, 1, 20)
+    g = generate_random_coherent_weighted_graph(100, 1, 20)
 
     # draw_graph_from_adj_matrix(g, 'oryginalny')
-    g2 = kruskal_algorhitm(g)
+    g2 = kruskal_algorithm(g)
     # draw_graph_from_adj_matrix(g2, 'drzewo_rozpinajace')
