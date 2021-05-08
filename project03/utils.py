@@ -174,7 +174,7 @@ def only_one_comp(graph):
     '''
         sprawdza czy graf zawiera tylko jedną spójną składową 
     '''
-    for i in range(0,len(components(graph))-1):
+    for i in range(len(components(graph))):
         if components(graph)[i] != 1:
            return False
     return True
