@@ -27,7 +27,6 @@ def print_matrix(matrix):
         print() 
 
 
-
 def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
     """
         Funkcja rysuje graf na podstawie trzech argumentów:
@@ -49,14 +48,18 @@ def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
     nodesize = 1500 / math.log(nodes_num, 10)
     
     # stworzenie pustego obiektu grafu, bez wierzchołków, bez krawędzi
-    G = nx.DiGraph()
+    G = nx.MultiDiGraph()
     if nodes_num > 0:
         # dodanie listy wierzchołków
         # domyślnie kolejne wierzchołki jako ich etykiety mają kolejne liczby naturalne
         G.add_nodes_from(list(range(1, nodes_num + 1)))
         # dodanie listy krawędzi
+        loop_edges = []
         for i in range(len(edges)):
-            G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2])
+            if edges[i][0] == edges[i][1]:
+                loop_edges.append(edges[i])
+            else:
+                G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2])
 
     for i in range(nodes_num):
         # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
@@ -66,12 +69,15 @@ def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
     'arrowstyle': '-|>',
     'arrowsize': 18,
     }
-
-
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     fig = plt.figure()
     nx.draw(G, arrows = True, **options, pos=positions, node_size=nodesize, node_color=colors,
             font_size= nodesize / 85, with_labels=True)
+    
+    for i in range(len(loop_edges)):
+        G.add_edge(loop_edges[i][0],loop_edges[i][1], weight=loop_edges[i][2])
+    nx.draw_networkx_edges(G, pos=positions, edgelist=loop_edges, arrowstyle="<|-", style="curved")
+    
     if with_weights:
         labels = nx.get_edge_attributes(G,'weight')
         nx.draw_networkx_edge_labels(G,positions,edge_labels=labels)
