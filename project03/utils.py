@@ -222,7 +222,7 @@ def draw_graph(nodes_num, edges, fname, colors = None):
     nx.draw(G, pos=positions, node_size=nodesize, node_color=colors,
             font_size= nodesize / 85, with_labels=True)
     labels = nx.get_edge_attributes(G,'weight')
-    nx.draw_networkx_edge_labels(G,positions,edge_labels=labels)
+    nx.draw_networkx_edge_labels(G,positions,edge_labels=labels, font_size=20)
     
     plt.draw()
     fig.set_size_inches(12, 12)
