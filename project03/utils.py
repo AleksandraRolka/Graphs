@@ -181,7 +181,6 @@ def only_one_comp(graph):
 	
 ################################################################################################################################################
 
-
 def draw_graph(nodes_num, edges, fname, colors = None):
     """
         Funkcja rysuje graf na podstawie trzech argumentów:
@@ -216,6 +215,7 @@ def draw_graph(nodes_num, edges, fname, colors = None):
         # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
         positions.update({(i + 1): (Sx + r * math.cos(i * alpha - PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
 
+    positions = nx.planar_layout(G)
 
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     fig = plt.figure()
@@ -312,14 +312,19 @@ def draw_graph_with_mst(g, mst, fname, colors = None):
         # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
         positions.update({(i + 1): (Sx + r * math.cos(i * alpha - PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
 
-
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     widths = list(nx.get_edge_attributes(G, 'width').values())
+
+    positions = nx.planar_layout(G)
 
     fig = plt.figure()
     nx.draw(G, pos=positions, node_size=nodesize, node_color=colors,
             font_size= nodesize / 85, with_labels=True, width=widths)
+
     labels = nx.get_edge_attributes(G, 'weight')
+    edge_labels_positions = positions.copy()
+    for i in range(nodes_num):
+        edge_labels_positions.update({(i + 1) : (3, 3)})
     nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=20)
     
     plt.draw()
