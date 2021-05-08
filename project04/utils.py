@@ -6,8 +6,6 @@ import copy
 import matplotlib.pyplot as plt
 import networkx as nx
 
-
-
 PI = math.pi
 
 # Funkcje z poprzednich projektów 
@@ -26,7 +24,8 @@ def print_matrix(matrix):
             print(el,end='  ')
         print() 
 
-
+# TO FIX: - drawing selfloop edges
+# TO CHECK - if weights are proper
 def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
     """
         Funkcja rysuje graf na podstawie trzech argumentów:
