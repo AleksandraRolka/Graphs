@@ -252,3 +252,76 @@ def draw_graph_from_adj_matrix(matrix, fname, colors = None):
 
     # na podstawie liczby wierzchołków oraz listy krawędzi wyrysowywujemy do pliku graficzną reprezentacje grafu
     draw_graph(nodes_num, edges, fname, colors)
+
+
+def draw_graph_with_mst(g, mst, fname, colors = None):
+    """
+        Funkcja rysuje graf na podstawie macierzy sąsiedztwa 
+        (wykorzystuje funkcję draw_graph)
+    """
+    size1 = len(g)
+    size2 = len(g[0])
+
+    # pierwszy wymiar macierzy daje nam liczbę wierzchołków
+    nodes_num = size1
+    edges = []
+    mst_edges = []
+
+    # przechodzimy pętlami po podanej macierzy sąsiedztwa
+    for i in range(size1):
+        for j in range(size2):
+            # zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
+            if g[i][j] > 0:
+                edges.append((i + 1, j + 1, g[i][j]))
+
+    # przechodzimy pętlami po podanej macierzy sąsiedztwa
+    for i in range(size1):
+        for j in range(i, size2):
+            # zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
+            if mst[i][j] > 0:
+                mst_edges.append((i + 1, j + 1, mst[i][j]))
+
+    # na podstawie liczby wierzchołków oraz listy krawędzi wyrysowywujemy do pliku graficzną reprezentacje grafu
+    fname = 'images/' + fname
+    if colors == None:
+        colors = '#b3ccff'
+    # wyliczenie kąta do równomiernego rozłożenia wierzchołków na okręgu
+    alpha = (2 * PI) / nodes_num
+    # promień okręgu
+    r = 15
+    # współrzędne środka okręgu
+    Sx, Sy = 20, 20
+    # lista współrzędnych położenia wierzchołków
+    positions = {}
+    nodesize = 1500 / math.log(nodes_num, 10)
+
+    # stworzenie pustego obiektu grafu, bez wierzchołków, bez krawędzi
+    G = nx.Graph()
+    if nodes_num > 0:
+        # dodanie listy wierzchołków
+        # domyślnie kolejne wierzchołki jako ich etykiety mają kolejne liczby naturalne
+        G.add_nodes_from(list(range(1, nodes_num + 1)))
+        # dodanie listy krawędzi
+        for i in range(len(edges)):
+            G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2], width=2, color='b')
+
+        for i in range(len(mst_edges)):
+            G.add_edge(mst_edges[i][0], mst_edges[i][1], weight=mst_edges[i][2], width=8, color='r')
+
+    for i in range(nodes_num):
+        # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
+        positions.update({(i + 1): (Sx + r * math.cos(i * alpha - PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
+
+
+    # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
+    widths = list(nx.get_edge_attributes(G, 'width').values())
+
+    fig = plt.figure()
+    nx.draw(G, pos=positions, node_size=nodesize, node_color=colors,
+            font_size= nodesize / 85, with_labels=True, width=widths)
+    labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=20)
+    
+    plt.draw()
+    fig.set_size_inches(12, 12)
+    fig.savefig(fname)

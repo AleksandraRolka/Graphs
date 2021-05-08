@@ -2,32 +2,48 @@ from task01 import *
 from utils import *
 import numpy as np
 
+def union(a, b, sets):
+    sets[a] = b
+
+def find_set(v, sets):
+    if sets[v] == v:
+        return v
+    return find_set(sets[v], sets)
+
 def kruskal_algorithm(graph):
 
-    n = len(graph[0]) # get number of vertices
+    n = len(graph[0]) # liczba wierzcholkow w grafie
     edges_in_tree = n - 1
 
+    # tworzymy macierz sąsiedztwa która bedzie przechowywała MDR
     minimal_spanning_tree = np.zeros((n, n), dtype=int)
 
     list_of_edges = []
     for i in range(n):
         for j in range(i, n):
             if graph[i][j] > 0:
-                list_of_edges.append({"weight": graph[i][j], "indexes": [i, j]})
+                list_of_edges.append({"weight": graph[i][j], "index": [i, j]})
 
+    sets = []
+
+    for i in range(n):
+        sets.append(i)
 
     list_of_edges.sort(key = lambda x : x["weight"])
-    print("po sortowaniu")
 
     placed_edges = 0
     for edge in list_of_edges:
 
         # get index of vertices
-        i = edge["indexes"][0]
-        j = edge["indexes"][1]
+        i = edge["index"][0]
+        j = edge["index"][1]
 
-        if not check_for_cycle(minimal_spanning_tree, i, j): # tu sprawdzamy czy dołożenie krawędzi spowoduje powstanie cyklu
+        i_set = find_set(i, sets)
+        j_set = find_set(j, sets)
+
+        if i_set != j_set:
             minimal_spanning_tree[i][j] = minimal_spanning_tree[j][i] = edge["weight"]
+            union(i_set, j_set, sets)
             placed_edges += 1
 
         if placed_edges >= edges_in_tree:
@@ -35,37 +51,8 @@ def kruskal_algorithm(graph):
 
     return minimal_spanning_tree
 
-def check_for_cycle(graph, i, j):
-    """
-    Funkcja sprawdza czy w grafie podanym jako macierz sąsiedztwa
-    dodanie krawędzi pomiędzy a i b spowoduje powstanie cyklu.
-    """
-
-    visited = np.zeros(len(graph[0]), dtype=bool)
-    return dfs_search(graph, i, j, visited)
-
-
-def dfs_search(graph, u, x, visited):
-    """
-    Funkcja przeszukująca graf w głąb poszukiwaniu wierzchołka x
-    """
-
-    visited[u] = True
-    u_neighbours = [ i for i, e in enumerate(graph[u]) if e > 0 and not visited[i] ]
-
-    for v in u_neighbours:
-        if v == x:
-            return True
-        visited[v] = True
-        if dfs_search(graph, v, x, visited):
-            return True
-
-    return False
-
 
 if __name__ == "__main__":
-    g = generate_random_coherent_weighted_graph(100, 1, 20)
-
-    # draw_graph_from_adj_matrix(g, 'oryginalny')
-    g2 = kruskal_algorithm(g)
-    # draw_graph_from_adj_matrix(g2, 'drzewo_rozpinajace')
+    g = generate_random_coherent_weighted_graph(6, 1, 10)
+    mst = kruskal_algorithm(g)
+    draw_graph_with_mst(g, mst, 'drzewo_rozpinajace')
