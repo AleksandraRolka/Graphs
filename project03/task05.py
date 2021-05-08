@@ -53,6 +53,6 @@ def kruskal_algorithm(graph):
 
 
 if __name__ == "__main__":
-    g = generate_random_coherent_weighted_graph(5)
+    g = generate_random_coherent_weighted_graph(6)
     mst = kruskal_algorithm(g)
     draw_graph_with_mst(g, mst, 'drzewo_rozpinajace')

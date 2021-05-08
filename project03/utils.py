@@ -323,7 +323,7 @@ def draw_graph_with_mst(g, mst, fname, colors = None):
             font_size= nodesize / 85, with_labels=True, width=widths, edge_color=edge_colors)
 
     labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=20)
+    nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=15, label_pos=0.6)
     
     plt.draw()
     fig.set_size_inches(12, 12)
