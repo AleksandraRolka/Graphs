@@ -246,7 +246,7 @@ def draw_graph_from_adj_matrix(matrix, fname, colors = None):
     for i in range(size1):
         for j in range(size2):
             # zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
-            if matrix[i][j] > 0:
+            if matrix[i][j] != 0:
                 edges.append((i + 1, j + 1,matrix[i][j]))
 
 
@@ -278,7 +278,7 @@ def draw_graph_with_mst(g, mst, fname, colors = None):
     for i in range(size1):
         for j in range(i, size2):
             # zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
-            if mst[i][j] > 0:
+            if mst[i][j] != 0:
                 mst_edges.append((i + 1, j + 1, mst[i][j]))
 
     # na podstawie liczby wierzchołków oraz listy krawędzi wyrysowywujemy do pliku graficzną reprezentacje grafu
