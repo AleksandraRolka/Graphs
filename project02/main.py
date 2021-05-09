@@ -34,18 +34,19 @@ LISTA DOSTĘPNYCH KOMEND:
 [-is_graphic_seq -filein filename]              - sprawdza czy sekwencja z pliku graph_representations/[filename] jest ciągiem graficznym
 [-randomize_graph -seq seq -n n]                - randomizuje [n] razy graf prosty o zadanym ciągu [seq] stopni wierzchołków
 [-randomize_graph -filein filename -n n]        - randomizuje [n] razy graf prosty o zadanym ciągu stopni wierzchołków, z pliku graph_representations/[filename]
-[-largest_connected_component -filein filename] - znajduje największą spójną składową grafu, znajdującego się w pliku graph_representations/[filename]
+[-largest_connected_component -filein filename] - znajduje największą spójną składową grafu, znajdującego się w pliku graph_representations/[filename] 
+                                                  (możliwe postacie wejściowego grafu: macierz sąsiedztwa, macierz incydencji, lista sąsiedztwa, ciąg)
 [-largest_connected_component -gnl -n n -l l]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i [l] krawędziach
-[-largest_connected_component -gnp -n n -p p]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i l krawędziach,
-[-random_eulerian_graph -n n]                     - generuje losowy graf Eulera o [n] wierzchołkach i znajduje w nim cykl Eulera
+[-largest_connected_component -gnp -n n -p p]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i [p] prawdop. wystąpienia krawędzi,
+[-random_eulerian_graph -n n]                   - generuje losowy graf Eulera o [n] wierzchołkach i znajduje w nim cykl Eulera
 [-random_k_regular_graph -n n -k k]             - generuje losowy graf [k]-regularny o [n] wierzchołkach
-[-is_hamiltonian_graph -filein filename]        - sprawdza czy graf jest hamiltonowski, jeśli tak to zwraca cykl Hamilton
-[-fileout filename]                             - plik, do którego ma zostać zapisany obraz grafu            
+[-is_hamiltonian_graph -filein filename]        - sprawdza czy graf (postać:lista sąsiedztwa) znajdujący się w pliku jest hamiltonowski, jeśli tak to zwraca cykl Hamiltona
+[-fileout filename]                             - [filename] nazwa pliku, do którego ma zostać zapisany obraz grafu (w formacie png)  np. -fileout graf01
 
 UWAGI:  
  - Pierwszy argument jest stały, musi być to jeden z podanych: -is_graphic_seq / -randomize_graph / -largest_connected_component / 
                                                                -random_eulerian_graph / -random_k_regular_graph / -is_hamiltonian_graph
- - Pozostałe argumenty ruchome, kolejność nie jest istotna.
+ - Pozostałe argumenty są ruchome, kolejność nie jest istotna.
  - Powyżej pokazane są jakie argumenty są konieczne w zależności od pierwszego argumentu, który wskazuje cel programu.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------                     
                     """)
@@ -105,16 +106,19 @@ UWAGI:
                     if seq is None:
                         raise LackOfNecessaryArg
                     else:
+                        ''' sprawdzenie czy podany ciag liczb jest ciagiem graficznym '''
                         check = degree_seq(seq, len(seq))
                         print('\n')
                         print(seq)
                         print('Podany ciąg jest graficzny.')
+                        ''' utworzenie macierzy sasiedztwa na podstawie ciagu liczb '''
                         adj_matrix = seq_to_adj_matrix(seq)
                         if adj_matrix is None:
                             return
                         print('\nGraf w postaci macierzy sąsiedztwa, utworzonej na podstawie zadanego ciągu:')
                         print_matrix(adj_matrix)
                         
+                        ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                         if filename_out is not None:
                             draw_graph_from_adj_matrix(adj_matrix, filename_out)
                             print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
@@ -124,6 +128,7 @@ UWAGI:
                         raise LackOfNecessaryArg
                     else:
                         try:
+                            ''' randomizacja grafu prostego o zadanym ciągu stopni wierzchołków '''
                             orginal, randomized = randomize_graph(n, seq)
                         except Exception as e:
                             return
@@ -132,6 +137,7 @@ UWAGI:
                         print('\nGraf po {} randomizacjach:'.format(n))
                         print_matrix(randomized)
                         
+                        ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                         if filename_out is not None:
                             draw_graph_from_incid_matrix(randomized, filename_out)
                             print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')                    
@@ -141,6 +147,7 @@ UWAGI:
                         raise LackOfNecessaryArg
                     else:
                         (repr, graph) = repr_recognizer(graph)
+                        ''' konwersja wejściowego grafu do macierzy sąsiedztwa '''
                         if repr == GraphRepr.INC:
                             graph = inc2adj(graph)
                         elif repr == GraphRepr.LIST:
@@ -148,10 +155,14 @@ UWAGI:
                         elif repr == GraphRepr.SEQ:
                             graph = seq_to_adj_matrix(graph)
                         if repr != GraphRepr.OTHER:
-                            print_components(graph)                            
+                            ''' Wyznacza wraz z wypisaniem na ekran spójne składowe oraz numer tej największej '''
+                            print_components(graph)   
+                            ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''                         
                             if filename_out is not None:
                                 draw_components(graph, filename_out)
                                 print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                        else:
+                            print('Podano niepoprawne dane wejściowe.\n(Możliwe postacie grafu wejściowego: macierz sąsiedztwa, lista sąsiedztwa, macierz incydencji, ciąg graficzny')
             # ------------------------------------------------------------------------------------------------------------------------------    
                 elif args[0] == '-random_eulerian_graph':
                     if n is None:
@@ -161,6 +172,7 @@ UWAGI:
                             print('Warunek ( n>=3 ) niespełniony')
                             return
                         else:
+                            ''' wygenerowanie losowego grafu Eulera o n wierzchołkach + znalezienie w nim cyklu Eulera '''
                             seq, graph, cycle = gen_random_eulerian_graph_find_cycle(n)
                             print("\n\nWygenerowano losowy ciąg (grafu eulerowskiego):\n{}".format(seq))
                             print("\nGraf Eulera w postaci macierzy sąsiedztwa:")
@@ -170,6 +182,7 @@ UWAGI:
                                 print('{0} -- '.format(cycle[i]), end='')
                             print(cycle[len(cycle)-1])
                             
+                            ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                             if filename_out is not None:
                                 draw_graph_from_adj_matrix(graph, filename_out)
                                 print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
@@ -179,12 +192,14 @@ UWAGI:
                         raise LackOfNecessaryArg
                     else:
                         try:
+                            ''' wygenerowanie losowego grafu k-regularnego o n-wierzchołkach '''
                             graph = random_k_regular_graph(n, k)
                         except Exception as e:
                             return
-                        print("\nWygenerowany losowy graf {}-regularny o {} wierchołkach:\n(macierzy incydencji)".format(k,n))
+                        print("\nWygenerowany losowy graf {}-regularny o {} wierchołkach:\n(macierz incydencji)".format(k,n))
                         print_matrix(graph)
                         
+                        ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                         if filename_out is not None:
                             draw_graph_from_incid_matrix(graph, filename_out)
                             print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
@@ -193,14 +208,16 @@ UWAGI:
                     if graph is None:
                         raise LackOfNecessaryArg
                     else:
-                        # zmniejszenie wartosci o jeden, aby numerowanie od zera dzialalo
+                        # zmniejszenie wartosci o jeden, aby numerowanie od zera się zgadzało
                         graph = [[x-1 for x in graph[i]] for i in range(0, len(graph))]
+                        ''' sprawdzenie czy podany graf jest hamiltonowski, jeśli tak, zwraca cykl Hamiltona '''
                         cycle = find_hamilton_cycle(graph)
                         if cycle is not None:
                             print('\n\nPodany graf jest grafem hamiltonowskim.\nZnaleziony cykl Hamiltona: ', cycle)
                         else:
                             print('Zadany graf nie posiada cyklu Hamiltona.')
-                            
+                        
+                        ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                         if filename_out is not None:
                             draw_graph_from_adj_list(graph, filename_out)
                             print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')

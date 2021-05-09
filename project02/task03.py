@@ -84,26 +84,3 @@ def draw_components(graph, filename):
     for i in range(len(comp)):
         colors_map.append(colors[comp[i]-1])
     draw_graph_from_adj_matrix(graph, filename, colors_map)
-
-
-if __name__ == "__main__":
-
-    filename = "graph_representations/seq.txt"
-    #graph = read_graph_from_file(filename)
-
-    #graph = random_with_probability(10, 0.15)
-    graph = random_with_edges(30, 20)
-
-    (repr, graph) = repr_recognizer(graph)
-    print_graph(graph)
-    print()
-
-    if repr == GraphRepr.INC:
-        graph = inc2adj(graph)
-    elif repr == GraphRepr.LIST:
-        graph = list2adj(graph)
-    elif repr == GraphRepr.SEQ:
-        graph = seq_to_adj_matrix(graph)
-    if repr != GraphRepr.OTHER:
-        print_components(graph)
-        draw_components(graph, "test")

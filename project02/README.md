@@ -1,0 +1,29 @@
+### Instalacja wymaganych bibliotek przed uruchomieniem programu:
+```
+pip3 install -r requirements.txt
+```
+
+### Wywołanie programu ```python3 main.py``` z odpowiednimi flagami:
+
+LISTA DOSTĘPNYCH KOMEND:
+[```-help```]                                         - wyświetla listę dostępnych komend
+[```-is_graphic_seq -seq seq```]                      - sprawdza czy podana na wejściu sekwencja [seq] (separator=' ') jest ciągiem graficznym
+[```-is_graphic_seq -filein filename```]              - sprawdza czy sekwencja z pliku graph_representations/[filename] jest ciągiem graficznym
+[```-randomize_graph -seq seq -n n```]                - randomizuje [n] razy graf prosty o zadanym ciągu [seq] stopni wierzchołków
+[```-randomize_graph -filein filename -n n```]        - randomizuje [n] razy graf prosty o zadanym ciągu stopni wierzchołków, z pliku graph_representations/[filename]
+[```-largest_connected_component -filein filename```] - znajduje największą spójną składową grafu, znajdującego się w pliku graph_representations/[filename] 
+						  	(możliwe postacie wejściowego grafu: macierz sąsiedztwa, macierz incydencji, lista sąsiedztwa, ciąg)
+[```-largest_connected_component -gnl -n n -l l```]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i [l] krawędziach
+[```-largest_connected_component -gnp -n n -p p```]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i l krawędziach,
+[```-random_eulerian_graph -n n```]                   - generuje losowy graf Eulera o [n] wierzchołkach i znajduje w nim cykl Eulera
+[```-random_k_regular_graph -n n -k k```]             - generuje losowy graf [k]-regularny o [n] wierzchołkach
+[```-is_hamiltonian_graph -filein filename```]        - sprawdza czy graf (postać:lista sąsiedztwa) znajdujący się w pliku jest hamiltonowski, jeśli tak to zwraca cykl Hamiltona
+[```-fileout filename```]                             - [filename] nazwa pliku, do którego ma zostać zapisany obraz grafu (w formacie png)  np. -fileout graf01
+
+UWAGI:  
+ - Pierwszy argument jest stały, musi być to jeden z podanych: ```-is_graphic_seq``` / ```-randomize_graph``` / ```-largest_connected_component``` / 
+                                                               ```-random_eulerian_graph``` / ```-random_k_regular_graph``` / ```-is_hamiltonian_graph```
+ - Pozostałe argumenty są ruchome, kolejność nie jest istotna.
+ - Powyżej pokazane są jakie argumenty są konieczne w zależności od pierwszego argumentu, który wskazuje cel programu.
+
+

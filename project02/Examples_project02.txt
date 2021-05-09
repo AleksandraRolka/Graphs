@@ -1,0 +1,12 @@
+Przykładowe wywołania:
+
+python3 main.py -is_graphic_seq -seq 2 2 2 0 3 5 2 -fileout p1                      - sprawdza czy podana na wejściu sekwencja jest ciągiem graficznym
+python3 main.py -is_graphic_seq -filein seq.txt -fileout p2                         - sprawdza czy sekwencja z pliku graph_representations/seq.txt jest ciągiem graficznym
+python3 main.py -randomize_graph -seq 2 2 2 0 3 5 2 -n 20 -fileout p3               - randomizuje 20 razy graf prosty o zadanym ciągu stopni wierzchołków
+python3 main.py -randomize_graph -filein seq.txt -n 20 -fileout p4                  - randomizuje 20 razy graf prosty o zadanym ciągu stopni wierzchołków, z pliku graph_representations/seq.txt
+python3 main.py -largest_connected_component -filein adj_matrix.txt -fileout p5     - znajduje największą spójną składową grafu, znajdującego się w pliku graph_representations/adj_matrix.txt
+python3 main.py -largest_connected_component -gnl -n 9 -l 16 -fileout p6            - znajduje największą spójną składową wygenerowanego losowego grafu o 9 wierzchołkach i 16 krawędziach
+python3 main.py -largest_connected_component -gnp -n 10 -p 0.5 -fileout p7          - znajduje największą spójną składową wygenerowanego losowego grafu o 10 wierzchołkach i 0.5 prawdopod. wystąpienia krawędzi
+python3 main.py -random_eulerian_graph -n 8 -fileout p8                             - generuje losowy graf Eulera o 8 wierzchołkach i znajduje w nim cykl Eulera
+python3 main.py -random_k_regular_graph -n 8 -k 3 -fileout p9                       - generuje losowy graf 3-regularny o 8 wierzchołkach
+python3 main.py -is_hamiltonian_graph -filein adj_list_hamilton.txt -fileout p10    - sprawdza czy graf (postać:lista sąsiedztwa) znajdujący się w pliku jest hamiltonowski, jeśli tak to zwraca cykl Hamiltona

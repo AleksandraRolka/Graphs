@@ -71,11 +71,3 @@ def randomize_graph(n, sequence):
         max_attempts -= 1
 
     return org_matrix,np.transpose(matrix)
-    
-        
-if __name__ == "__main__":
-    
-    org_matrix, randomize_matrix = randomize_graph(15, [2, 2, 2, 0, 3, 5, 2])
-    print(org_matrix)
-    print()
-    print(randomize_matrix)

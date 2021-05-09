@@ -135,28 +135,3 @@ def gen_random_eulerian_graph_find_cycle(n):
 
 
     return seq, graph, cycle
-
-
-
-
-if __name__ == "__main__":
-
-    n = 0
-    n = int(input(
-        "\nPodaj liczbę n (>=3) wierzchołów, dla których utworzony zostanie graf eulerowski:\n"))
-    while n < 3:
-        n = int(input("Nieprawidłowa wartość n. Spróbuj ponownie: "))
-
-    seq, graph, cycle = gen_random_eulerian_graph_find_cycle(n)
-
-    print("\n__Wygenerowany losowy ciąg (grafu eulerowskiego): ", seq)
-    print("__Graf Eulera w postaci macierzy sąsiedztwa:")
-    print_matrix(graph)
-
-    print("__Cykl Eulera wygenerowanego grafu:")
-    for i in range(len(cycle)-1):
-        print('{0} -- '.format(cycle[i]), end='')
-    print(cycle[len(cycle)-1])
-    
-    print("__Graficzna wersja grafu zapisana w pliku: images/eulerian_graph.png.")
-    draw_graph_from_adj_matrix(graph, "eulerian_graph.png")

@@ -7,9 +7,7 @@ import copy
 ''' 
     FUNKCJE POMOCNICZE DO PROJEKTU 2 
 '''
-
-# funkcje wykorzystane w task04
-###################################################################################################
+#################################################################################################################
 
 class HiddenPrints:
     '''
@@ -24,21 +22,17 @@ class HiddenPrints:
         sys.stdout.close()
         sys.stdout = self._original_stdout
     
-    
-        
+       
 def print_matrix(matrix):
-    '''
-        wypisuje maciersz w formie:
+    ''' wypisuje maciersz w formie:
         np. 0  1  1
             1  0  1
             1  1  0         
     '''
     for row in matrix:
-        # print("    ", end='')
         for el in row:
-            print(el, end='  ')
-        print("\n", end='')
-
+            print('%4d' % el,end='')
+        print()
 
 
 def matrix_remove_zeros(matrix):
@@ -54,7 +48,6 @@ def matrix_remove_zeros(matrix):
     return data
 
 
-
 def components_list_and_max(graph):
     '''
         funkcja zwraca indeks maksymalnej składowej 
@@ -64,7 +57,6 @@ def components_list_and_max(graph):
     with HiddenPrints():
         max, comps = print_components(graph)
         return comps, max
-
 
 
 def swap_rows(matrix, i, j):
@@ -90,7 +82,7 @@ def rearange_matrix_by_seq(matrix, seq):
         dostosowywuje kolejności wierszy, kolumn grafu 
         do kolejności stopni wierzchołków podanego ciągu
     '''
-	
+    
     for i in range(len(seq)):
         for j in range(len(seq)):
             if sum(matrix[i]) == seq[i]:
@@ -102,5 +94,3 @@ def rearange_matrix_by_seq(matrix, seq):
                         swap_columns(matrix, i, s)
 
     return matrix
-
-###################################################################################################

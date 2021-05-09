@@ -35,16 +35,3 @@ def find_hamilton_cycle(graph, v=0, stack=[]):
             result = find_hamilton_cycle(graph, neighbor, stack_backup)
             if result is not None:
                 return result
-
-
-if __name__ == "__main__":
-    filename = "graph_representations/adj_list_hamilton.txt"
-    graph = read_graph_from_file(filename)
-
-    # zmniejszenie wartosci o jeden, aby numerowanie od zera dzialalo
-    graph = [[x-1 for x in graph[i]] for i in range(0, len(graph))]
-    result = find_hamilton_cycle(graph)
-    if result is not None:
-        print('Znaleziono cykl Hamiltona: ', result)
-    else:
-        print('Zadany graf nie posiada cyklu Hamiltona.')

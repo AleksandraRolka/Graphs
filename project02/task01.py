@@ -34,7 +34,6 @@ def seq_to_adj_matrix(seq):
     """
         Funkcja tworzy macierz sasiedztwa na podstawie ciagu liczb
         seq - ciag liczb naturalnych
-
     """
     if degree_seq(seq, len(seq)) == False:
         print("Dana sekwencja liczb nie jest ciagiem graficznym!")
@@ -63,10 +62,3 @@ def seq_to_adj_matrix(seq):
         my_list = sorted(my_list, key=lambda x: x[1], reverse=True)
 
     return adj_matrix
-
-
-if __name__ == "__main__":
-    l = [4, 2, 2, 3, 2, 1, 4, 2, 2, 2, 2]
-    print(degree_seq(l, 11))
-    adj_matrix = seq_to_adj_matrix(l)
-    draw_graph_from_adj_matrix(adj_matrix, "g1.png")
