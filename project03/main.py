@@ -110,8 +110,10 @@ LISTA DOSTĘPNYCH KOMEND:
                     mst, cost = kruskal_algorithm(g)
                     print("Algortm szukania minimalnego drzewa rozpinającego zakończony")
                     print(f"Suma wag krawęzi MDR wynosi {cost}")
-                    draw_graph_with_mst(g, mst, filename_out)
-                    print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+                    
+                    if filename_out is not None:
+                        draw_graph_with_mst(g, mst, filename_out)
+                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
                     
                 elif args[0] == '-dijkstra':
 
@@ -129,8 +131,10 @@ LISTA DOSTĘPNYCH KOMEND:
                         
                     (d, p) = dijkstra(g)
                     print_dijkstra(d, p)
-                    print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
-                    draw_graph_from_adj_matrix(g, 'test')
+                    
+                    if filename_out is not None:
+                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+                        draw_graph_from_adj_matrix(g, filename_out)
 
                 elif args[0] == '-distance_matrix':
 
@@ -151,8 +155,9 @@ LISTA DOSTĘPNYCH KOMEND:
                     print("Otrzymaliśmy następującą macierz odległości")
                     print_matrix(dm)
 
-                    print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
-                    draw_graph_from_adj_matrix(g, 'test')
+                    if filename_out is not None:
+                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+                        draw_graph_from_adj_matrix(g, filename_out)
 
                 elif args[0] == '-graph_centers':
 
@@ -175,8 +180,9 @@ LISTA DOSTĘPNYCH KOMEND:
                     print("Centrum minimax = ", minimax_center_idx+1,
                         " (odległość od najdalszego: ", minimax_center_val, ")", sep='')
 
-                    print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
-                    draw_graph_from_adj_matrix(g, 'test')
+                    if filename_out is not None:
+                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+                        draw_graph_from_adj_matrix(g, filename_out)
 
                 else:
                     raise LackOfNecessaryArg
