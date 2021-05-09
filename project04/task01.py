@@ -1,4 +1,6 @@
 from utils import *
+import numpy as np
+import random as rnd
 
 
 def adj_list_from_adj_matrix(adj_matrix):
@@ -58,7 +60,6 @@ def random_digraph_with_probability(n, p):
 	if p > 1 or p < 0:
 		print("Prawdopodobieństwo nie mieści się w przedziale [0, 1].")
 		return
-
 	if n <= 1:
 		print("Podaj co najmniej 2 wierzchołki")
 		return
@@ -75,11 +76,8 @@ def random_digraph_with_probability(n, p):
 	return matrix
 
 
-
-
 if __name__ == "__main__":
-
-			  
+  
 	adj_matrix = random_digraph_with_probability(6,0.3)
 	adj_list = adj_list_from_adj_matrix(adj_matrix)
 	inc_matrix = inc_matrix_from_adj_matrix(adj_matrix)
@@ -96,6 +94,5 @@ if __name__ == "__main__":
 		print()
 	print("macierz incydencji:")
 	print_matrix(inc_matrix)
-	
 		
-	draw_graph_from_adj_matrix(adj_matrix, 'digraph')
+	draw_graph_from_adj_matrix(adj_matrix, 'digraph1')
