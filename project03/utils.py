@@ -135,8 +135,8 @@ def print_matrix(matrix):
     '''
     for row in matrix:
         for el in row:
-            print("\t{}".format(el),end='')
-        print("\n", end='') 
+            print('%4d' % el,end='')
+        print() 
 
 
 
