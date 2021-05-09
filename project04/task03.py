@@ -42,23 +42,20 @@ def strongly_coherent_random_digraph(n, p):
 	return adj_matrix
 	
 	
-	
-	
 def BellmanFord(graph,v0):
-
+	'''
+		Znajduje najkrótsze ścieżeki od danego wierzchołka.
+		Zwraca listę odległóśći od wierzchołka źródłowego 
+		do pozostałych wierzchołków.
+	'''
 	edges = edges_from_adj_matrix_indexinf_from_zero(graph)
 	V = len(graph)
-	
 	# inicjalizacja odleglosci do wszystkich wierzchołków jako nieskończ.
 	d = [inf] * V
 	# inicjalizacja odlegości do wierzchołka źródłowego jako 0
 	d[v0] = 0	
-
-
 	
-	# Relax all edges |V| - 1 times. A simple
-	# shortest path from v0 to any other
-	# vertex can have at-most |V| - 1 edges
+	# Relaksacja krawędzi V-1 razy
 	for i in range(1, V-1):
 		for e in edges:
 			u = e[0]
@@ -67,13 +64,9 @@ def BellmanFord(graph,v0):
 			# print('{}   {}   {}'.format(d[v],d[v],w))
 			if  d[v] > d[u] + w:
 				d[v] = d[u] + w
-
  
-	# check for negative-weight cycles.
-	# The above step guarantees shortest
-	# distances if graph doesn't contain
-	# negative weight cycle. If we get a
-	# shorter path, then there is a cycle.
+	# Sprawdza czy są cykle o ujemnej wadze, jeśli tak, 
+	# kończy program wypisując wcześniej informacje o ujemnym cyklu
 	for e in edges:
 		u = e[0]
 		v = e[1]
@@ -85,7 +78,6 @@ def BellmanFord(graph,v0):
 	return d;
 	
 
-	
 
 if __name__ == "__main__":
 
