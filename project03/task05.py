@@ -49,10 +49,10 @@ def kruskal_algorithm(graph):
         if placed_edges >= edges_in_tree:
             break
 
-    return minimal_spanning_tree
+    return minimal_spanning_tree, cost
 
 
 if __name__ == "__main__":
     g = generate_random_coherent_weighted_graph(6)
-    mst = kruskal_algorithm(g)
+    mst, cost = kruskal_algorithm(g)
     draw_graph_with_mst(g, mst, 'drzewo_rozpinajace')
