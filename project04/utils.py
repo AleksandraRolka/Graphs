@@ -16,9 +16,8 @@ def print_matrix(matrix):
 	'''
 	for row in matrix:
 		for el in row:
-			print(el,end='  ')
+			print('%4d' % el,end='')
 		print() 
-
 # TO FIX: - drawing selfloop edges
 
 def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
@@ -84,25 +83,35 @@ def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
 	fig.savefig(fname)
 
 
+def edges_from_adj_matrix(matrix):
+	edges = []
+	# przechodzimy pętlami po podanej macierzy sąsiedztwa
+	for i in range(len(matrix)):
+		for j in range(len(matrix[0])):
+			# zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
+			if matrix[i][j] != 0:
+				edges.append((i+1, j+1,matrix[i][j]))
+	return edges
 
+def edges_from_adj_matrix_indexinf_from_zero(matrix):
+	edges = []
+	# przechodzimy pętlami po podanej macierzy sąsiedztwa
+	for i in range(len(matrix)):
+		for j in range(len(matrix[0])):
+			# zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
+			if matrix[i][j] > 0:
+				edges.append((i, j,matrix[i][j]))
+	return edges
+	
+	
 def draw_graph_from_adj_matrix(matrix, fname, colors = None, with_weights = False):
 	"""
 		Funkcja rysuje graf na podstawie macierzy sąsiedztwa 
 		(wykorzystuje funkcję draw_graph)
 	"""
-	size1 = len(matrix)
-	size2 = len(matrix[0])
-
 	# pierwszy wymiar macierzy daje nam liczbę wierzchołków
-	nodes_num = size1
-	edges = []
-
-	# przechodzimy pętlami po podanej macierzy sąsiedztwa
-	for i in range(size1):
-		for j in range(size2):
-			# zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
-			if matrix[i][j] > 0:
-				edges.append((i + 1, j + 1,matrix[i][j]))
+	nodes_num = len(matrix)
+	edges = edges_from_adj_matrix(matrix)
 
 	# na podstawie liczby wierzchołków oraz listy krawędzi wyrysowywujemy do pliku graficzną reprezentacje grafu
 	draw_graph(nodes_num, edges, fname, colors, with_weights)
