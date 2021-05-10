@@ -4,10 +4,9 @@ import sys
 import os
 import copy
 
-''' 
-    FUNKCJE POMOCNICZE DO PROJEKTU 2 
-'''
+# FUNKCJE POMOCNICZE DO PROJEKTU 2
 #################################################################################################################
+
 
 class HiddenPrints:
     '''

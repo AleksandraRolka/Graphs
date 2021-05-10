@@ -40,11 +40,10 @@ def randomize_graph(n, sequence):
 
         is_allowed_to_swap = True
 
-        # sprawdzamy czy wierzchołki nie zostały powtórzone
         if a == c or a == d or b == c or b == d:
             is_allowed_to_swap = False
-        
-        # sprawdzamy czy przypadkiem ad i bc już istnieją
+
+        # sprawdzamy czy wierzchołki nie zostały powtórzone
         for edge in matrix:
             x, y = [i for i, e in enumerate(edge) if e == 1]
             if a == x and d == y:

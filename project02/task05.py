@@ -1,5 +1,4 @@
 from task02 import randomize_graph
-from utils import inc2adj
 
 def random_k_regular_graph(n, k):
     """

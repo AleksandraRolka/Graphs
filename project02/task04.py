@@ -1,10 +1,6 @@
 import random as rnd
-import sys
 from task01 import degree_seq, seq_to_adj_matrix
-from task03 import print_components
-from utils import draw_graph_from_adj_matrix
-from utils_proj02 import * 
-
+from utils_proj02 import *
 
 
 def gen_random_seq_of_even_num(n):
