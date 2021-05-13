@@ -32,6 +32,7 @@ def print_matrix(matrix, repr_in=None):
             print()
     else:
         print("Niepoprawny zapis")
+        exit()
 
 
 def adj2list(matrix):
