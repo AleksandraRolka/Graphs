@@ -10,6 +10,9 @@ import sys
 class LackOfNecessaryArg(Exception):
     pass
 
+class BadFirstArg(Exception):
+    pass
+
 def main():
 
     args = sys.argv[1:]
@@ -98,7 +101,9 @@ LISTA DOSTĘPNYCH KOMEND:
                     if input_graph is None and n > 0:
                         random_graph = generate_random_coherent_weighted_graph(n)
                         g = random_graph
-                        print("Graf został wylosowany... Trwa szukanie mimalnego drzewa rozpinającego")
+                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print_matrix(random_graph)
+                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
@@ -120,7 +125,9 @@ LISTA DOSTĘPNYCH KOMEND:
                     if input_graph is None and n > 0:
                         random_graph = generate_random_coherent_weighted_graph(n)
                         g = random_graph
-                        print("Graf został wylosowany...")
+                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print_matrix(random_graph)
+                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
@@ -141,7 +148,9 @@ LISTA DOSTĘPNYCH KOMEND:
                     if input_graph is None and n > 0:
                         random_graph = generate_random_coherent_weighted_graph(n)
                         g = random_graph
-                        print("Graf został wylosowany...")
+                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print_matrix(random_graph)
+                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
@@ -164,7 +173,9 @@ LISTA DOSTĘPNYCH KOMEND:
                     if input_graph is None and n > 0:
                         random_graph = generate_random_coherent_weighted_graph(n)
                         g = random_graph
-                        print("Graf został wylosowany...")
+                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print_matrix(random_graph)
+                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
@@ -185,10 +196,12 @@ LISTA DOSTĘPNYCH KOMEND:
                         draw_graph_from_adj_matrix(g, filename_out)
 
                 else:
-                    raise LackOfNecessaryArg
+                    raise BadFirstArg
 
         except LackOfNecessaryArg:
             print("Konieczne argumenty nie zostały podane")
+        except BadFirstArg:
+            print("Zła nazwa zadania. Użyj podkomendy [-help], żeby znaleźć poprawną.")
         except ValueError:
             print("Niepoprawny typ argumentu")
             return
