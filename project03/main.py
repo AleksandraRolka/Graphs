@@ -10,8 +10,10 @@ import sys
 class LackOfNecessaryArg(Exception):
     pass
 
+
 class BadFirstArg(Exception):
     pass
+
 
 def main():
 
@@ -21,10 +23,10 @@ def main():
     b = None
     filename_out = None
     input_graph = None
-    
+
     if len(args) > 0:
         try:
-            
+
             if "-help" in args:
                 print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,12 +43,12 @@ LISTA DOSTĘPNYCH KOMEND:
 [-minimal_spanning_tree -n n -out out]              - tworzy minimalne drzewo rozpinające dla losowego grafu o [n] wierzchołkach
 [-minimal_spanning_tree -graph graph -out out]      - tworzy minimalne drzewo rozpinające dla podanego przez użytkownika grafu w postaci macierzy sąsiedztwa
 
---------------------------------------------------------------------------------------------------------------------------------------------------------------                     
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
                     """)
             else:
-                
+
                 # ---------------------------------------------------
-                # Parsowanie podanych argumentów wywołania programu 
+                # Parsowanie podanych argumentów wywołania programu
                 # ---------------------------------------------------
                 if "-out" in args:
                     idx = args.index("-out")
@@ -63,136 +65,166 @@ LISTA DOSTĘPNYCH KOMEND:
                     idx = args.index("-b")
                     b = float(args[idx+1])
 
-                    
                 if "-graph" in args:
                     idx = args.index("-graph")
                     filename_in = args[idx+1]
                     with open("graph_representations/"+filename_in) as f:
                         input_graph = [
                             [int(num) for num in line.split(' ')] for line in f]
-                    
 
         # ------------------------------------------------------------------------------------------------------------------------------
-        # Wywołanie odpowiednich funkcji z plików 'task0%.py' w zależności od pierwszego argumentu, który wskazuje na rodzaj zadania 
-        # ------------------------------------------------------------------------------------------------------------------------------    
+        # Wywołanie odpowiednich funkcji z plików 'task0%.py' w zależności od pierwszego argumentu, który wskazuje na rodzaj zadania
+        # ------------------------------------------------------------------------------------------------------------------------------
                 if args[0] == '-random_coherent_weighted_graph':
                     if n is None:
                         raise LackOfNecessaryArg
                     else:
                         if a is None and b is None:
-                            random_graph = generate_random_coherent_weighted_graph(n)
+                            random_graph = generate_random_coherent_weighted_graph(
+                                n)
                         else:
                             if b <= a:
-                                raise "b nie może być mniejsze od a"
-                            random_graph = generate_random_coherent_weighted_graph(n, a, b)
+                                raise Exception("b nie może być mniejsze od a")
+                            random_graph = generate_random_coherent_weighted_graph(
+                                n, a, b)
 
                         print()
-                        print('Wylosowany został następujący graf: (postać macierzy sąsiedztwa)')
+                        print(
+                            'Wylosowany został następujący graf: (postać macierzy sąsiedztwa)')
 
                         print_matrix(random_graph)
-                        
-                        if filename_out is not None:
-                            draw_graph_from_adj_matrix(random_graph, filename_out)
-                            print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
 
-            # ------------------------------------------------------------------------------------------------------------------------------    
+                        if filename_out is not None:
+                            draw_graph_from_adj_matrix(
+                                random_graph, filename_out)
+                            print(
+                                '\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+
+            # ------------------------------------------------------------------------------------------------------------------------------
                 elif args[0] == '-minimal_spanning_tree':
 
                     if input_graph is None and n > 0:
-                        random_graph = generate_random_coherent_weighted_graph(n)
+                        random_graph = generate_random_coherent_weighted_graph(
+                            n)
                         g = random_graph
-                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print(
+                            "Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
                         print_matrix(random_graph)
-                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
+                        print(
+                            "\nRozpoczęto szukanie mimalnego drzewa rozpinającego\n")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
-                        print("Pobrano macierz sąsiedztwa z pliku... Trwa szukanie minimalnego drzewa rozpinającego")
+                        if not only_one_comp(g):
+                            raise Exception("Podany graf jest niespójny")
+                        print(
+                            "Pobrano macierz sąsiedztwa z pliku... Trwa szukanie minimalnego drzewa rozpinającego")
 
                     else:
-                        raise "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]"
-                        
+                        raise Exception(
+                            "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]")
+
                     mst, cost = kruskal_algorithm(g)
-                    print("Algortm szukania minimalnego drzewa rozpinającego zakończony")
+                    print(
+                        "Algortm szukania minimalnego drzewa rozpinającego zakończony")
                     print(f"Suma wag krawęzi MDR wynosi {cost}")
-                    
+
                     if filename_out is not None:
                         draw_graph_with_mst(g, mst, filename_out)
-                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
-                    
+                        print(
+                            '\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+
                 elif args[0] == '-dijkstra':
 
                     if input_graph is None and n > 0:
-                        random_graph = generate_random_coherent_weighted_graph(n)
+                        random_graph = generate_random_coherent_weighted_graph(
+                            n)
                         g = random_graph
-                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print(
+                            "Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
                         print_matrix(random_graph)
-                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
+                        print("\n")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
+                        if not only_one_comp(g):
+                            raise Exception("Podany graf jest niespójny")
                         print("Pobrano macierz sąsiedztwa z pliku...")
 
                     else:
-                        raise "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]"
-                        
+                        raise Exception(
+                            "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]")
+
                     (d, p) = dijkstra(g)
                     print_dijkstra(d, p)
-                    
+
                     if filename_out is not None:
-                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+                        print(
+                            '\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
                         draw_graph_from_adj_matrix(g, filename_out)
 
                 elif args[0] == '-distance_matrix':
 
                     if input_graph is None and n > 0:
-                        random_graph = generate_random_coherent_weighted_graph(n)
+                        random_graph = generate_random_coherent_weighted_graph(
+                            n)
                         g = random_graph
-                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print(
+                            "Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
                         print_matrix(random_graph)
-                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
+                        print("\n")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
+                        if not only_one_comp(g):
+                            raise Exception("Podany graf jest niespójny")
                         print("Pobrano macierz sąsiedztwa z pliku...")
 
                     else:
-                        raise "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]"
-                        
+                        raise Exception(
+                            "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]")
+
                     dm = get_distance_matrix(g)
 
                     print("Otrzymaliśmy następującą macierz odległości")
                     print_matrix(dm)
 
                     if filename_out is not None:
-                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+                        print(
+                            '\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
                         draw_graph_from_adj_matrix(g, filename_out)
 
                 elif args[0] == '-graph_centers':
 
                     if input_graph is None and n > 0:
-                        random_graph = generate_random_coherent_weighted_graph(n)
+                        random_graph = generate_random_coherent_weighted_graph(
+                            n)
                         g = random_graph
-                        print("Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
+                        print(
+                            "Graf został wylosowany.\nJego reprezentacja w formie listy sąsiedztwa:")
                         print_matrix(random_graph)
-                        print("Rozpoczęto szukanie mimalnego drzewa rozpinającego")
+                        print("\n")
 
                     elif n is None and len(input_graph) > 0:
                         g = input_graph
+                        if not only_one_comp(g):
+                            raise Exception("Podany graf jest niespójny")
                         print("Pobrano macierz sąsiedztwa z pliku...")
 
                     else:
-                        raise "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]"
-                        
+                        raise Exception(
+                            "Podaj albo [n] liczbę wierzchołków do wygenerowania lub plik z gotowym grafem [graph]")
+
                     (center_idx, center_val, minimax_center_idx,
-                    minimax_center_val) = find_graph_centers(g)
+                     minimax_center_val) = find_graph_centers(g)
                     print("Centrum = ", center_idx+1,
-                        " (suma odległości: ", center_val, ")", sep='')
+                          " (suma odległości: ", center_val, ")", sep='')
                     print("Centrum minimax = ", minimax_center_idx+1,
-                        " (odległość od najdalszego: ", minimax_center_val, ")", sep='')
+                          " (odległość od najdalszego: ", minimax_center_val, ")", sep='')
 
                     if filename_out is not None:
-                        print('\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
+                        print(
+                            '\nGraficzną reprezentację grafu zapisano w pliku images/' + filename_out + '.png')
                         draw_graph_from_adj_matrix(g, filename_out)
 
                 else:
@@ -201,7 +233,8 @@ LISTA DOSTĘPNYCH KOMEND:
         except LackOfNecessaryArg:
             print("Konieczne argumenty nie zostały podane")
         except BadFirstArg:
-            print("Zła nazwa zadania. Użyj podkomendy [-help], żeby znaleźć poprawną.")
+            print(
+                "Zła nazwa zadania. Użyj podkomendy [-help], żeby znaleźć poprawną.")
         except ValueError:
             print("Niepoprawny typ argumentu")
             return
@@ -211,13 +244,13 @@ LISTA DOSTĘPNYCH KOMEND:
         except FileNotFoundError:
             print("Podany plik wejściowy nie istnieje")
         except Exception as e:
-            print(e)        
-    
+            print(e)
+
     else:
         print(
             "Nie podano żadnych argumentów\nLista akceptowanych argumentów dostępna pod komendą [-help]")
         return
-        
+
 
 if __name__ == "__main__":
     main()

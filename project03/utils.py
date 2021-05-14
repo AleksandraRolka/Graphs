@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 
-
 PI = math.pi
 
-# Funkcje z poprzednich projektów 
+# Funkcje z poprzednich projektów
 
 ################################################################################################################################################
+
 
 def gen_random_seq(n):
 
@@ -23,7 +23,7 @@ def gen_random_seq(n):
 
     while not(degree_seq(seq, len(seq))):
         seq = gen_random_seq(n)
-        
+
     return seq
 
 
@@ -88,7 +88,6 @@ def seq_to_adj_matrix(seq):
         my_list = sorted(my_list, key=lambda x: x[1], reverse=True)
 
     return adj_matrix
-    
 
 
 def swap_rows(matrix, i, j):
@@ -100,6 +99,7 @@ def swap_rows(matrix, i, j):
     matrix[j][:] = temp
     return matrix
 
+
 def swap_columns(matrix, i, j):
     '''
         zamienia w macierzy kolumny i z j
@@ -107,13 +107,14 @@ def swap_columns(matrix, i, j):
     for l in matrix:
         l[i], l[j] = l[j], l[i]
     return matrix
-    
+
+
 def rearange_matrix_by_seq(matrix, seq):
     '''
         dostosowywuje kolejności wierszy, kolumn grafu 
         do kolejności stopni wierzchołków podanego ciągu
     '''
-    
+
     for i in range(len(seq)):
         for j in range(len(seq)):
             if sum(matrix[i]) == seq[i]:
@@ -126,6 +127,7 @@ def rearange_matrix_by_seq(matrix, seq):
 
     return matrix
 
+
 def print_matrix(matrix):
     '''
         wypisuje maciersz w formie:
@@ -135,9 +137,8 @@ def print_matrix(matrix):
     '''
     for row in matrix:
         for el in row:
-            print('%4d' % el,end='')
-        print() 
-
+            print('%4d' % el, end='')
+        print()
 
 
 def components_r(nr, v, graph, comp):
@@ -148,13 +149,14 @@ def components_r(nr, v, graph, comp):
     """
     neighbours = []
     for i in range(len(graph)):
-        if graph[v][i] == 1:
+        if graph[v][i] != 0:
             neighbours.append(i)
     for n in neighbours:
         if comp[n] == -1:
             comp[n] = nr
             components_r(nr, n, graph, comp)
-            
+
+
 def components(graph):
     """
         Funkcja zwracająca listę przyporządkującą każdy wierzchołek
@@ -170,18 +172,20 @@ def components(graph):
             components_r(nr, v, graph, comp)
     return comp
 
+
 def only_one_comp(graph):
     '''
         sprawdza czy graf zawiera tylko jedną spójną składową 
     '''
     for i in range(len(components(graph))):
         if components(graph)[i] != 1:
-           return False
+            return False
     return True
-	
+
 ################################################################################################################################################
 
-def draw_graph(nodes_num, edges, fname, colors = None):
+
+def draw_graph(nodes_num, edges, fname, colors=None):
     """
         Funkcja rysuje graf na podstawie trzech argumentów:
         - ilości wierzchołków (etykietowanie 1:ilość wierzchołków)
@@ -200,7 +204,7 @@ def draw_graph(nodes_num, edges, fname, colors = None):
     # lista współrzędnych położenia wierzchołków
     positions = {}
     nodesize = 1500 / math.log(nodes_num, 10)
-    
+
     # stworzenie pustego obiektu grafu, bez wierzchołków, bez krawędzi
     G = nx.Graph()
     if nodes_num > 0:
@@ -209,28 +213,29 @@ def draw_graph(nodes_num, edges, fname, colors = None):
         G.add_nodes_from(list(range(1, nodes_num + 1)))
         # dodanie listy krawędzi
         for i in range(len(edges)):
-            G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2])
+            G.add_edge(edges[i][0], edges[i][1], weight=edges[i][2])
 
     for i in range(nodes_num):
         # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
-        positions.update({(i + 1): (Sx + r * math.cos(i * alpha - PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
+        positions.update({(i + 1): (Sx + r * math.cos(i * alpha -
+                         PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
 
     # positions = nx.spring_layout(G)
 
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     fig = plt.figure()
     nx.draw(G, pos=positions, node_size=nodesize, node_color=colors,
-            font_size= nodesize / 85, with_labels=True)
-    labels = nx.get_edge_attributes(G,'weight')
-    nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=15, label_pos=0.6)
-    
+            font_size=nodesize / 85, with_labels=True)
+    labels = nx.get_edge_attributes(G, 'weight')
+    nx.draw_networkx_edge_labels(
+        G, positions, edge_labels=labels, font_size=15, label_pos=0.6)
+
     plt.draw()
     fig.set_size_inches(12, 12)
     fig.savefig(fname)
 
 
-
-def draw_graph_from_adj_matrix(matrix, fname, colors = None):
+def draw_graph_from_adj_matrix(matrix, fname, colors=None):
     """
         Funkcja rysuje graf na podstawie macierzy sąsiedztwa 
         (wykorzystuje funkcję draw_graph)
@@ -247,14 +252,13 @@ def draw_graph_from_adj_matrix(matrix, fname, colors = None):
         for j in range(size2):
             # zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
             if matrix[i][j] != 0:
-                edges.append((i + 1, j + 1,matrix[i][j]))
-
+                edges.append((i + 1, j + 1, matrix[i][j]))
 
     # na podstawie liczby wierzchołków oraz listy krawędzi wyrysowywujemy do pliku graficzną reprezentacje grafu
     draw_graph(nodes_num, edges, fname, colors)
 
 
-def draw_graph_with_mst(g, mst, fname, colors = None):
+def draw_graph_with_mst(g, mst, fname, colors=None):
     """
         Funkcja rysuje graf na podstawie macierzy sąsiedztwa 
         (wykorzystuje funkcję draw_graph)
@@ -303,14 +307,17 @@ def draw_graph_with_mst(g, mst, fname, colors = None):
         G.add_nodes_from(list(range(1, nodes_num + 1)))
         # dodanie listy krawędzi
         for i in range(len(edges)):
-            G.add_edge(edges[i][0],edges[i][1], weight=edges[i][2], width=2, color='black', fontsize=12)
+            G.add_edge(edges[i][0], edges[i][1], weight=edges[i]
+                       [2], width=2, color='black', fontsize=12)
 
         for i in range(len(mst_edges)):
-            G.add_edge(mst_edges[i][0], mst_edges[i][1], weight=mst_edges[i][2], width=8, color='r', fontsize=20)
+            G.add_edge(mst_edges[i][0], mst_edges[i][1],
+                       weight=mst_edges[i][2], width=8, color='r', fontsize=20)
 
     for i in range(nodes_num):
         # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
-        positions.update({(i + 1): (Sx + r * math.cos(i * alpha - PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
+        positions.update({(i + 1): (Sx + r * math.cos(i * alpha -
+                         PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
 
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     widths = list(nx.get_edge_attributes(G, 'width').values())
@@ -320,11 +327,12 @@ def draw_graph_with_mst(g, mst, fname, colors = None):
 
     fig = plt.figure()
     nx.draw(G, pos=positions, node_size=nodesize, node_color=colors,
-            font_size= nodesize / 85, with_labels=True, width=widths, edge_color=edge_colors)
+            font_size=nodesize / 85, with_labels=True, width=widths, edge_color=edge_colors)
 
     labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=15, label_pos=0.6)
-    
+    nx.draw_networkx_edge_labels(
+        G, positions, edge_labels=labels, font_size=15, label_pos=0.6)
+
     plt.draw()
     fig.set_size_inches(12, 12)
     fig.savefig(fname)
