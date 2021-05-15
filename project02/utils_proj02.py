@@ -30,7 +30,7 @@ def print_matrix(matrix):
     '''
     for row in matrix:
         for el in row:
-            print('%4d' % el,end='')
+            print('%3d' % el,end='')
         print()
 
 

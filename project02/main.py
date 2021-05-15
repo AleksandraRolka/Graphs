@@ -1,5 +1,3 @@
-from task01 import *
-from task02 import *
 from task03 import *
 from task04 import *
 from task05 import *
@@ -24,32 +22,89 @@ def main():
     
     if len(args) > 0:
         try:
-            
-            if "-help" in args:
-                print("""
+            if len(args) == 1:
+                if "-help" in args:
+                    print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 LISTA DOSTĘPNYCH KOMEND:
 [-help]                                         - wyświetla listę dostępnych komend
-[-is_graphic_seq -seq seq]                      - sprawdza czy podana na wejściu sekwencja [seq] (separator=' ') jest ciągiem graficznym
-[-is_graphic_seq -filein filename]              - sprawdza czy sekwencja z pliku graph_representations/[filename] jest ciągiem graficznym
-[-randomize_graph -seq seq -n n]                - randomizuje [n] razy graf prosty o zadanym ciągu [seq] stopni wierzchołków
-[-randomize_graph -filein filename -n n]        - randomizuje [n] razy graf prosty o zadanym ciągu stopni wierzchołków, z pliku graph_representations/[filename]
-[-largest_connected_component -filein filename] - znajduje największą spójną składową grafu, znajdującego się w pliku graph_representations/[filename] 
-                                                  (możliwe postacie wejściowego grafu: macierz sąsiedztwa, macierz incydencji, lista sąsiedztwa, ciąg)
-[-largest_connected_component -gnl -n n -l l]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i [l] krawędziach
-[-largest_connected_component -gnp -n n -p p]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i [p] prawdop. wystąpienia krawędzi,
-[-random_eulerian_graph -n n]                   - generuje losowy graf Eulera o [n] wierzchołkach i znajduje w nim cykl Eulera
-[-random_k_regular_graph -n n -k k]             - generuje losowy graf [k]-regularny o [n] wierzchołkach
-[-is_hamiltonian_graph -filein filename]        - sprawdza czy graf (postać:lista sąsiedztwa) znajdujący się w pliku jest hamiltonowski, jeśli tak to zwraca cykl Hamiltona
-[-fileout filename]                             - [filename] nazwa pliku, do którego ma zostać zapisany obraz grafu (w formacie png)  np. -fileout graf01
+[-is_graphic_seq]                               - sprawdza czy sekwencja jest ciągiem graficznym
+[-randomize_graph]                              - randomizuje [n] razy graf prosty
+[-largest_connected_component]                  - znajduje największą spójną składową graf
+[-random_eulerian_graph]                        - generuje losowy graf Eulera i znajduje w nim cykl Eulera
+[-random_k_regular_graph]                       - generuje losowy graf k-regularny
+[-is_hamiltonian_graph]                         - sprawdza czy graf jest hamiltonowski, jeśli tak to zwraca cykl Hamiltona
 
-UWAGI:  
- - Pierwszy argument jest stały, musi być to jeden z podanych: -is_graphic_seq / -randomize_graph / -largest_connected_component / 
-                                                               -random_eulerian_graph / -random_k_regular_graph / -is_hamiltonian_graph
- - Pozostałe argumenty są ruchome, kolejność nie jest istotna.
- - Powyżej pokazane są jakie argumenty są konieczne w zależności od pierwszego argumentu, który wskazuje cel programu.
---------------------------------------------------------------------------------------------------------------------------------------------------------------                     
-                    """)
+*** Aby sprawdzić z jakimi argumentami wywołuje się dany program uruchom z "-help", np. "python3 main.py -is_graphic_seq -help" ***
+*** Aby zapisać graficzną reprezentacje wynikowego grafu:
+[-fileout filename]                             - [filename] nazwa pliku, do którego ma zostać zapisany obraz grafu w formacie png
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+""")
+                elif  "-is_graphic_seq" in args:
+                    print("----\n  Wywołaj -is_graphic_seq -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif  "-randomize_graph" in args:
+                    print("----\n  Wywołaj -randomize_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif  "-largest_connected_component" in args:
+                    print("----\n  Wywołaj -largest_connected_component -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif  "-random_eulerian_graph" in args:
+                    print("----\n  Wywołaj -random_eulerian_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif  "-random_k_regular_graph" in args:
+                    print("----\n  Wywołaj -random_k_regular_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif  "-is_hamiltonian_graph" in args:
+                    print("----\n  Wywołaj -is_hamiltonian_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                else:
+                    raise LackOfNecessaryArg
+                    
+            elif "-is_graphic_seq" in args and "-help" in args:
+                print("""
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PODKOMENDY DO -is_graphic_seq:
+[-seq seq]                  - sprawdza czy podana na wejściu sekwencja [seq] (separator=' ') jest ciągiem graficznym
+[-filein filename]          - sprawdza czy sekwencja z pliku graph_representations/[filename] jest ciągiem graficznym
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+""")
+            elif "-randomize_graph" in args and "-help" in args:
+                print("""
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PODKOMENDY DO -randomize_graph:
+[-seq seq -n n]             - randomizuje [n] razy graf prosty o zadanym ciągu [seq] stopni wierzchołków
+[-filein filename -n n]     - randomizuje [n] razy graf prosty o zadanym ciągu stopni wierzchołków, z pliku graph_representations/[filename]
+[-filein filename]          - znajduje największą spójną składową grafu, znajdującego się w pliku graph_representations/[filename] 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+""")
+            elif "-largest_connected_component" in args and "-help" in args:
+                print("""
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PODKOMENDY DO -largest_connected_component:
+[-filein filename] - znajduje największą spójną składową grafu, znajdującego się w pliku graph_representations/[filename] 
+                                                  (możliwe postacie wejściowego grafu: macierz sąsiedztwa, macierz incydencji, lista sąsiedztwa, ciąg)
+[-gnl -n n -l l]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i [l] krawędziach
+[-gnp -n n -p p]   - znajduje największą spójną składową wygenerowanego losowego grafu o [n] wierzchołkach i [p] prawdop. wystąpienia krawędzi,
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+""")
+            elif "-random_eulerian_graph" in args and "-help" in args:
+                print("""
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PODKOMENDY DO -random_eulerian_graph:
+[-n n]          - generuje losowy graf Eulera o [n] wierzchołkach i znajduje w nim cykl Eulera
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+""")
+            elif "-random_k_regular_graph" in args and "-help" in args:
+                print("""
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PODKOMENDY DO -random_k_regular_graph:
+[-n n -k k]     - generuje losowy graf [k]-regularny o [n] wierzchołkach
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+""")
+            elif "-is_hamiltonian_graph" in args and "-help" in args:
+                print("""
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PODKOMENDY DO -is_hamiltonian_graph:
+[-filein filename]        - sprawdza czy graf (postać:lista sąsiedztwa) znajdujący się w pliku jest hamiltonowski, jeśli tak to zwraca cykl Hamiltona
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+""")
+            
             else:
                 
                 # ---------------------------------------------------
@@ -108,7 +163,7 @@ UWAGI:
                     else:
                         ''' sprawdzenie czy podany ciag liczb jest ciagiem graficznym '''
                         check = degree_seq(seq, len(seq))
-                        print('\n')
+                        print()
                         print(seq)
                         print('Podany ciąg jest graficzny.')
                         ''' utworzenie macierzy sasiedztwa na podstawie ciagu liczb '''
@@ -134,7 +189,7 @@ UWAGI:
                             return
                         print('\nPierwotnie utworzony graf:')
                         print_matrix(orginal)
-                        print('\nGraf po {} randomizacjach:'.format(n))
+                        print('\nGraf po randomizacjach:')
                         print_matrix(randomized)
                         
                         ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
@@ -209,9 +264,10 @@ UWAGI:
                         raise LackOfNecessaryArg
                     else:
                         # zmniejszenie wartosci o jeden, aby numerowanie od zera się zgadzało
-                        graph = [[x-1 for x in graph[i]] for i in range(0, len(graph))]
+                        copy_graph = copy.deepcopy(graph)
+                        copy_graph = [[x-1 for x in graph[i]] for i in range(0, len(graph))]
                         ''' sprawdzenie czy podany graf jest hamiltonowski, jeśli tak, zwraca cykl Hamiltona '''
-                        cycle = find_hamilton_cycle(graph)
+                        cycle = find_hamilton_cycle(copy_graph)
                         if cycle is not None:
                             print('\n\nPodany graf jest grafem hamiltonowskim.\nZnaleziony cykl Hamiltona: ', cycle)
                         else:
