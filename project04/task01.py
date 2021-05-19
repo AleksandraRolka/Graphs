@@ -70,7 +70,7 @@ def random_digraph_with_probability(n, p):
 	# czy od/do wierzchołka pojawia się krawędź
 	for i in range(0, n):
 		for j in range(0, n):
-			if rnd.random() <= p and i!=j:
+			if rnd.random() <= p and i!=j and matrix[j][i]==0:
 				matrix[i][j] = 1
 				
 	return matrix
@@ -78,7 +78,7 @@ def random_digraph_with_probability(n, p):
 
 if __name__ == "__main__":
   
-	adj_matrix = random_digraph_with_probability(6,0.3)
+	adj_matrix = random_digraph_with_probability(6,0.4)
 	adj_list = adj_list_from_adj_matrix(adj_matrix)
 	inc_matrix = inc_matrix_from_adj_matrix(adj_matrix)
 	
