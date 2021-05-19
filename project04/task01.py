@@ -70,7 +70,7 @@ def random_digraph_with_probability(n, p):
 	# czy od/do wierzchołka pojawia się krawędź
 	for i in range(0, n):
 		for j in range(0, n):
-			if rnd.random() <= p:
+			if rnd.random() <= p and i!=j:
 				matrix[i][j] = 1
 				
 	return matrix
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 	print_matrix(adj_matrix)
 	print("lista sąsiedztwa:")
 	for i in range(len(adj_list)):
-		print('{}:  '.format(i),end='')
+		print('{}:  '.format(i+1),end='')
 		for j in range(len(adj_list[i])):
 			print(adj_list[i][j], end =' ')
 		print()
