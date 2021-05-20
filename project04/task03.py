@@ -48,15 +48,18 @@ def BellmanFord(graph,v0):
 		Zwraca listę odległóśći od wierzchołka źródłowego 
 		do pozostałych wierzchołków.
 	'''
-	edges = edges_from_adj_matrix_indexinf_from_zero(graph)
+	edges = edges_from_adj_matrix_nodes_indexed_from_zero(graph)
 	V = len(graph)
 	# inicjalizacja odleglosci do wszystkich wierzchołków jako nieskończ.
-	d = [inf] * V
+	d = [float("inf")]*V
+	# inicjacja listy poprzedników jak niezdefiniowane
+	p = [None]*V
+
 	# inicjalizacja odlegości do wierzchołka źródłowego jako 0
 	d[v0] = 0	
 	
-	# Relaksacja krawędzi V-1 razy
-	for i in range(1, V-1):
+	# # Relaksacja krawędzi V-1 razy
+	for i in range(V-1):
 		for e in edges:
 			u = e[0]
 			v = e[1]
@@ -64,28 +67,34 @@ def BellmanFord(graph,v0):
 			# print('{}   {}   {}'.format(d[v],d[v],w))
 			if  d[v] > d[u] + w:
 				d[v] = d[u] + w
+				p[v] = u
  
 	# Sprawdza czy są cykle o ujemnej wadze, jeśli tak, 
-	# kończy program wypisując wcześniej informacje o ujemnym cyklu
+	# program kończy wypisując wcześniej informacje o ujemnym cyklu
 	for e in edges:
 		u = e[0]
 		v = e[1]
 		w = e[2]
 		if d[v] > d[u] + w:
-			print("Graf zawiera ujemny cykl")
-			return sys.exit(-1)
-		
-	return d;
+			return False, None, None
+
+	return True, d, p
 	
 
 
 if __name__ == "__main__":
 
 	adj_matrix = strongly_coherent_random_digraph(4,0.4)
-	adj_matrix = set_random_weight(adj_matrix,-2,10)	
+	adj_matrix = set_random_weight(adj_matrix,-5,10)	
 	dist_matrix = []
 	for i in range(len(adj_matrix)):
-		dist_matrix.append(BellmanFord(adj_matrix,i))
+		check, dist, p = (BellmanFord(adj_matrix,i))
+		if check == False:
+			print("Graf zawiera ujemny cykl")
+			sys.exit(0)
+		else:
+			dist_matrix.append(dist)
+
 		
 	draw_graph_from_adj_matrix(adj_matrix, 'digraph3',with_weights=True)
 	print("Losowy silnie spójny digraf ważony:")
