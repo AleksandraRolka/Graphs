@@ -67,7 +67,6 @@ def BellmanFord(graph,weights,v0):
 			u = e[0]
 			v = e[1]
 			w = weights[u][v]
-			# print('{}   {}   {}'.format(d[v],d[v],w))
 			if  d[v] > d[u] + w:
 				d[v] = d[u] + w
 				p[v] = u
