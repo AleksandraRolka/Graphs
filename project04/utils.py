@@ -19,19 +19,6 @@ def print_matrix(matrix):
 			print('%4d' % el,end='')
 		print() 
 		
-def print_matrix2(matrix):
-	'''
-		wypisuje maciersz w formie:
-		np. 0  1  1
-			1  0  1
-			1  1  0         
-	'''
-	for row in matrix:
-		for el in row:
-			print('%4d' % el[1],end='')
-		print() 
-		
-# TO FIX: - drawing selfloop edges
 
 def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
 	"""
