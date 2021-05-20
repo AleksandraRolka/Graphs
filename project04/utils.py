@@ -18,6 +18,19 @@ def print_matrix(matrix):
 		for el in row:
 			print('%4d' % el,end='')
 		print() 
+		
+def print_matrix2(matrix):
+	'''
+		wypisuje maciersz w formie:
+		np. 0  1  1
+			1  0  1
+			1  1  0         
+	'''
+	for row in matrix:
+		for el in row:
+			print('%4d' % el[1],end='')
+		print() 
+		
 # TO FIX: - drawing selfloop edges
 
 def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
@@ -93,16 +106,16 @@ def edges_from_adj_matrix(matrix):
 				edges.append((i+1, j+1,matrix[i][j]))
 	return edges
 
-def edges_from_adj_matrix_indexinf_from_zero(matrix):
+def edges_from_adj_matrix_nodes_indexed_from_zero(matrix):
 	edges = []
 	# przechodzimy pętlami po podanej macierzy sąsiedztwa
 	for i in range(len(matrix)):
 		for j in range(len(matrix[0])):
-			# zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami
-			if matrix[i][j] > 0:
+			# zapisujemy informacje o występujących połączeniach miedzy wierzchołkami, czyli krawędziami ideksująć wierzchołki od zera
+			if matrix[i][j] != 0:
 				edges.append((i, j,matrix[i][j]))
 	return edges
-	
+
 	
 def draw_graph_from_adj_matrix(matrix, fname, colors = None, with_weights = False):
 	"""
