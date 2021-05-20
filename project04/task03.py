@@ -35,6 +35,8 @@ def set_random_weight(adj_matrix, a, b):
 def strongly_coherent_random_digraph(n, p):
 	'''
 		Generuje losowy silnie spójny digraf
+		- wejście: 	n -liczba wierzchołów, p -prawdopodobienstwo wystąpienia krawedzi pomiedzy dwoma 					wierzchołkami (zakres [0,1])
+		- wyjście:	graf skierowany w popstaci macierzy sąsiedztwa
 	'''
 	adj_matrix = random_digraph_with_probability(n,p)
 	while not only_one_comp(adj_matrix):
@@ -42,20 +44,21 @@ def strongly_coherent_random_digraph(n, p):
 	return adj_matrix
 	
 	
-def BellmanFord(graph,v0):
+def BellmanFord(graph,weights,v0):
 	'''
 		Znajduje najkrótsze ścieżeki od danego wierzchołka.
-		Zwraca listę odległóśći od wierzchołka źródłowego 
-		do pozostałych wierzchołków.
+		- wejście: macierz sąsiedzwta grafu skierowanego (bez wag), macierz wag grafu, wierzchołek źródłowy 
+		- wyjście: wartość bool w zależności czy istnieje cykl o ujemnej wadze, lista odległóśći od          			wierzchołka źródłowego do pozostałych wierzchołków.
 	'''
 	edges = edges_from_adj_matrix_nodes_indexed_from_zero(graph)
 	V = len(graph)
-	# inicjalizacja odleglosci do wszystkich wierzchołków jako nieskończ.
-	d = [float("inf")]*V
-	# inicjacja listy poprzedników jak niezdefiniowane
-	p = [None]*V
 
-	# inicjalizacja odlegości do wierzchołka źródłowego jako 0
+	# inicjalizacja:
+	#	- odleglosci do wszystkich wierzchołków jako nieskończ.
+	# 	- listy poprzedników jak niezdefiniowane
+	#	- odlegości do wierzchołka źródłowego jako 0
+	d = [float("inf")]*V
+	p = [None]*V
 	d[v0] = 0	
 	
 	# # Relaksacja krawędzi V-1 razy
@@ -63,7 +66,7 @@ def BellmanFord(graph,v0):
 		for e in edges:
 			u = e[0]
 			v = e[1]
-			w = e[2]
+			w = weights[u][v]
 			# print('{}   {}   {}'.format(d[v],d[v],w))
 			if  d[v] > d[u] + w:
 				d[v] = d[u] + w
@@ -74,7 +77,7 @@ def BellmanFord(graph,v0):
 	for e in edges:
 		u = e[0]
 		v = e[1]
-		w = e[2]
+		w = weights[u][v]
 		if d[v] > d[u] + w:
 			return False, None, None
 
@@ -84,11 +87,12 @@ def BellmanFord(graph,v0):
 
 if __name__ == "__main__":
 
-	adj_matrix = strongly_coherent_random_digraph(4,0.4)
-	adj_matrix = set_random_weight(adj_matrix,-5,10)	
+	adj_matrix_unweighted = strongly_coherent_random_digraph(4,0.4)
+	adj_matrix = set_random_weight(adj_matrix_unweighted,-5,10)	
 	dist_matrix = []
+
 	for i in range(len(adj_matrix)):
-		check, dist, p = (BellmanFord(adj_matrix,i))
+		check, dist, p = (BellmanFord(adj_matrix_unweighted, adj_matrix, i))
 		if check == False:
 			print("Graf zawiera ujemny cykl")
 			sys.exit(0)
