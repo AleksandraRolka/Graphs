@@ -1,5 +1,6 @@
 from random import randint, shuffle, choice
 import numpy as np
+from utils import *
 
 def char_to_index(c):
     return ord(c) - ord('a') + 1
@@ -112,30 +113,22 @@ def random_network(n):
         adj_matrix[in_index][total_nodes-1] = randint(1, 10)
 
     # dodajemy 2N łuków
-    max_edges = 2 * n
+    max_edges = 2
     current_edges = 0
 
-    print(total_nodes)
-
     while current_edges < max_edges:
-
-        print(f"luk nr {current_edges}")
 
         # losujemy wierzchołka
         u = randint(1, total_nodes-2)
         v = randint(1, total_nodes-2)
-        print(f"{u} {v}")
 
         if u != v and adj_matrix[u][v] == 0 and adj_matrix[v][u] == 0:
             adj_matrix[u][v] = randint(1, 10)
-
             current_edges += 1
-
-    print(adj_matrix)
 
     return adj_matrix
 
 if __name__ == "__main__":
 
     g = random_network(4)
-    print(g)
+    draw_graph_from_adj_matrix(g, "test", with_weights=True)
