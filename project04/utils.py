@@ -74,7 +74,7 @@ def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
 	nx.draw_networkx_edges(G, pos=positions, edgelist=loop_edges, arrowstyle="<|-", style="curved")
 
 	if with_weights:
-		l = nx.get_edge_attributes(G,'weight')	#tu błąd bo klucz jest trzyelementwoy ??
+		l = nx.get_edge_attributes(G,'weight')
 		labels = {}
 		for key, value in l.items():
 			labels[(key[0],key[1])] = value
