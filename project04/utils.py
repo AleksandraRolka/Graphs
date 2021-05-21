@@ -1,6 +1,8 @@
 import math
 import matplotlib.pyplot as plt
 import networkx as nx
+import random as rnd
+import math
 
 PI = math.pi
 
@@ -115,3 +117,63 @@ def draw_graph_from_adj_matrix(matrix, fname, colors = None, with_weights = Fals
 
 	# na podstawie liczby wierzchołków oraz listy krawędzi wyrysowywujemy do pliku graficzną reprezentacje grafu
 	draw_graph(nodes_num, edges, fname, colors, with_weights)
+
+
+def init(G, s):
+    """
+        Funkcja nadająca wartości początkowe atrybutom
+        d i p dla wierzchołków grafu G\n
+        G - zbiór wierzchołków grafu\n
+        s - numer startowego wierzchołka (numeracja od zera)\n
+        d - wagi najkrótszych ścieżek od wierzchołka s do pozostałych\n
+        p - lista poprzedników
+    """
+    d = []
+    p = []
+    for i in range(len(G)):
+        d.append(math.inf)
+        p.append(None)
+    d[s] = 0
+    return d, p
+
+
+def relax(u, v, w, d, p):
+    """
+        Funkcja wykonująca relaksację krawędzi (u, v)\n
+        u, v - wierzchołki połączone krawędzią (u, v)\n
+        w - wagi w grafie
+    """
+    if d[v] > d[u] + w[u][v]:
+        d[v] = d[u] + w[u][v]
+        p[v] = u
+
+
+
+
+def dijkstra(graph, w, s=1):
+    """
+        Algorytm Dijkstry\n
+        graph - graf w postaci macierzy sąsiedztwa\n
+        s - numer startowego wierzchołka (numeracja od jedynki,
+        następnie funkcja zmienia numerację na od zera, dla
+        uproszczenia indeksowania)
+    """
+
+    if s >= len(graph) or s < 0:
+        print("Podano niepoprawny numer wierzchołka")
+        exit(-1)
+
+    (d, p) = init(graph, s)
+    G = [i for i in range(len(graph))]
+
+    while len(G) != 0:
+        u = G[0]
+        for i in G:
+            if d[i] < d[u]:
+                u = i
+        G.remove(u)
+
+        for v in G:
+            if graph[u][v] == 1:
+                relax(u, v, w, d, p)
+    return d, p
