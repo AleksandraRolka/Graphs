@@ -69,7 +69,7 @@ def draw_graph(nodes_num, layers, edges, flow=None, fname="test", colors=None, w
         # umiesz
         for v in range(len(layers[i])):
             j += 1
-            positions.update({(j): (100 + i * 100, 100 + v * 100)})
+            positions.update({(j): (100 + i * 50, 100 + v * 50)})
             labelsdicts[j] = wierzcholki[j-1]
         # positions.update({(i + 1): (20 * i, 100)})
 
