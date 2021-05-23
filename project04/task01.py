@@ -70,7 +70,7 @@ def random_digraph_with_probability(n, p):
 	# czy od/do wierzchołka pojawia się krawędź
 	for i in range(0, n):
 		for j in range(0, n):
-			if rnd.random() <= p and i!=j and matrix[j][i]==0:
+			if rnd.random() <= p and i!=j:
 				matrix[i][j] = 1
 				
 	return matrix
