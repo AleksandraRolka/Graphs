@@ -45,7 +45,7 @@ def johnson(G, G_weights):
 
     #sprawdzenie czy graf zawiera ujemny cykl za pomocą BellmanaForda
     if check == False:
-        print("Graf zawiera ujemny cykl! Koniec programu.")
+        print("Graf zawiera ujemny cykl!")
         exit(-1)
     else:
         h = d

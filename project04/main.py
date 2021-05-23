@@ -139,7 +139,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
 
                 # ------------------------------------------------------------------------------------------------------------------------------  
 
-                if args[0] == "-kosaraju":
+                elif args[0] == "-kosaraju":
                     if filename_in is None:
                         if p is None or n is None:
                             raise LackOfNecessaryArg
@@ -156,7 +156,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
 
                  # ------------------------------------------------------------------------------------------------------------------------------  
                     
-                if args[0] == "-bellmann_ford":
+                elif args[0] == "-bellmann_ford":
                     if any(item is None for item in [a,b,n,p]):
                         adj_matrix_unweighted = strongly_coherent_random_digraph()
                         adj_matrix = set_random_weight(adj_matrix_unweighted)	
@@ -185,7 +185,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
 
                 # ------------------------------------------------------------------------------------------------------------------------------  
                 
-                if args[0] == "-johnson":
+                elif args[0] == "-johnson":
                     if any(item is None for item in [a,b,n,p]):
                         adj_matrix_unweighted = strongly_coherent_random_digraph()
                         adj_matrix = set_random_weight(copy.deepcopy(adj_matrix_unweighted))
