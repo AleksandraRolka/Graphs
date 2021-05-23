@@ -64,13 +64,13 @@ python3 main.py -n 4 -fileout1 f1 -fileout2 f2
             return
 
         print("Tworzenie losowej sieci przepływowej...")
-        g = random_network(n)
+        g, layers = random_network(n)
         if filename_out1 == None:
             print("\nMacierz sąsiedztwa wylosowanej sieci:")
             print_matrix(g)
         else:
             draw_graph_from_adj_matrix(
-                g, fname=filename_out1, with_weights=True)
+                g, layers, fname=filename_out1, with_weights=True)
             print("Obraz losowej sieci przepływowej zapisano w pliku: images/",
                   filename_out1, sep='')
 
@@ -79,7 +79,7 @@ python3 main.py -n 4 -fileout1 f1 -fileout2 f2
         print("Wartość maksymalnego przepływu: fmax =", fmax)
         if filename_out2 != None:
             draw_graph_from_adj_matrix(
-                g, flow=f, fname=filename_out2, with_weights=True)
+                g, layers, flow=f, fname=filename_out2, with_weights=True)
             print("Obraz sieci z ustalonym maksymalnym przepływem zapisano w pliku: images/",
                   filename_out2, sep='')
 

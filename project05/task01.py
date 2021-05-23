@@ -129,8 +129,9 @@ def random_network(n):
             adj_matrix[u][v] = randint(1, 10)
             current_edges += 1
 
-    return adj_matrix
+    return adj_matrix, layers
 
 
 if __name__ == "__main__":
-    pass
+    adj_matrix, layers = random_network(2)
+    draw_graph_from_adj_matrix(adj_matrix, layers, with_weights=True)

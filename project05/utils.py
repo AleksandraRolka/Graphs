@@ -23,7 +23,7 @@ def print_matrix(matrix):
         print()
 
 
-def draw_graph(nodes_num, edges, flow=None, fname="test", colors=None, with_weights=False):
+def draw_graph(nodes_num, layers, edges, flow=None, fname="test", colors=None, with_weights=False):
     """
             Funkcja rysuje graf na podstawie trzech argumentów:
             - ilości wierzchołków (etykietowanie 1:ilość wierzchołków)
@@ -43,6 +43,11 @@ def draw_graph(nodes_num, edges, flow=None, fname="test", colors=None, with_weig
     positions = {}
     nodesize = 1500 / math.log(nodes_num, 10)
 
+    wierzcholki = []
+    for l in layers:
+        for v in l:
+            wierzcholki.append(v)
+
     # stworzenie pustego obiektu grafu, bez wierzchołków, bez krawędzi
     G = nx.MultiDiGraph()
     if nodes_num > 0:
@@ -57,10 +62,16 @@ def draw_graph(nodes_num, edges, flow=None, fname="test", colors=None, with_weig
             else:
                 G.add_edge(edges[i][0], edges[i][1], weight=edges[i][2])
 
-    for i in range(nodes_num):
-        # wyliczenie współrzędnych położenia wierzcholków równomiernie na kole
-        positions.update({(i + 1): (Sx + r * math.cos(i * alpha -
-                         PI / 2), Sy + r * math.sin(i * alpha + PI / 2))})
+    labelsdicts = {}
+
+    j = 0
+    for i in range(len(layers)):
+        # umiesz
+        for v in range(len(layers[i])):
+            j += 1
+            positions.update({(j): (100 + i * 100, 100 + v * 100)})
+            labelsdicts[j] = wierzcholki[j-1]
+        # positions.update({(i + 1): (20 * i, 100)})
 
     options = {
         'arrowstyle': '-|>',
@@ -70,7 +81,7 @@ def draw_graph(nodes_num, edges, flow=None, fname="test", colors=None, with_weig
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     fig = plt.figure()
     nx.draw(G, arrows=True, **options, pos=positions, node_size=nodesize, node_color=colors,
-            font_size=nodesize / 85, with_labels=True)
+            font_size=nodesize / 85, labels=labelsdicts, with_labels=True)
 
     for i in range(len(loop_edges)):
         G.add_edge(loop_edges[i][0], loop_edges[i][1], weight=loop_edges[i][2])
@@ -116,7 +127,7 @@ def edges_from_adj_matrix_nodes_indexed_from_zero(matrix):
     return edges
 
 
-def draw_graph_from_adj_matrix(matrix, flow=None, fname="test", colors=None, with_weights=False):
+def draw_graph_from_adj_matrix(matrix, layers, flow=None, fname="test", colors=None, with_weights=False):
     """
             Funkcja rysuje graf na podstawie macierzy sąsiedztwa 
             (wykorzystuje funkcję draw_graph)
@@ -126,4 +137,4 @@ def draw_graph_from_adj_matrix(matrix, flow=None, fname="test", colors=None, wit
     edges = edges_from_adj_matrix(matrix)
 
     # na podstawie liczby wierzchołków oraz listy krawędzi wyrysowywujemy do pliku graficzną reprezentacje grafu
-    draw_graph(nodes_num, edges, flow, fname, colors, with_weights)
+    draw_graph(nodes_num, layers, edges, flow, fname, colors, with_weights)
