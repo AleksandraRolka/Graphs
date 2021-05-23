@@ -2,8 +2,10 @@ from random import randint, shuffle, choice
 import numpy as np
 from utils import *
 
+
 def char_to_index(c):
     return ord(c) - ord('a') + 1
+
 
 def random_network(n):
 
@@ -11,7 +13,7 @@ def random_network(n):
 
     # wartstwa 0 (źródło)
     layers.append(["S"])
-    
+
     node_id = 'a'
 
     for i in range(n):
@@ -21,10 +23,11 @@ def random_network(n):
 
         for j in range(nodes_in_layer):
             layer.append(node_id)
-            node_id = chr(ord(node_id) + 1) # dodajemy kolejny wierzchołek do wartswy
+            # dodajemy kolejny wierzchołek do wartswy
+            node_id = chr(ord(node_id) + 1)
 
         layers.append(layer)
-    
+
     # wartswa n+1 (ujście)
     layers.append(["T"])
 
@@ -67,7 +70,7 @@ def random_network(n):
             for _ in range(len(i_layer_indexes)):
                 in_index = i_layer_indexes.pop()
                 out_index = inext_layer_indexes.pop()
-                adj_matrix[in_index][out_index] = randint(1,10)
+                adj_matrix[in_index][out_index] = randint(1, 10)
 
         # przypadek kiedy warstwa i-ta jest większa
         elif len(i_layer_indexes) > len(inext_layer_indexes):
@@ -81,12 +84,12 @@ def random_network(n):
             for _ in range(len(inext_layer_indexes)):
                 in_index = i_layer_indexes.pop()
                 out_index = inext_layer_indexes.pop()
-                adj_matrix[in_index][out_index] = randint(1,10)
+                adj_matrix[in_index][out_index] = randint(1, 10)
 
             for _ in range(len(i_layer_indexes)):
                 in_index = i_layer_indexes.pop()
                 out_index = next_layer_copy.pop()
-                adj_matrix[in_index][out_index] = randint(1,10)
+                adj_matrix[in_index][out_index] = randint(1, 10)
 
         # przypadek kiedy wartstwa i-ta jest mniejsza
         else:
@@ -100,12 +103,12 @@ def random_network(n):
             for _ in range(len(i_layer_indexes)):
                 in_index = i_layer_indexes.pop()
                 out_index = inext_layer_indexes.pop()
-                adj_matrix[in_index][out_index] = randint(1,10)
+                adj_matrix[in_index][out_index] = randint(1, 10)
 
             for _ in range(len(inext_layer_indexes)):
                 in_index = curr_layer_copy.pop()
                 out_index = inext_layer_indexes.pop()
-                adj_matrix[in_index][out_index] = randint(1,10)
+                adj_matrix[in_index][out_index] = randint(1, 10)
 
     # krawędzie do ujścia
     for i in range(len(layers[n])):
@@ -113,12 +116,12 @@ def random_network(n):
         adj_matrix[in_index][total_nodes-1] = randint(1, 10)
 
     # dodajemy 2N łuków
-    max_edges = 2
+    max_edges = 2 * n
     current_edges = 0
 
     while current_edges < max_edges:
 
-        # losujemy wierzchołka
+        # losujemy wierzchołki
         u = randint(1, total_nodes-2)
         v = randint(1, total_nodes-2)
 
@@ -128,7 +131,6 @@ def random_network(n):
 
     return adj_matrix
 
-if __name__ == "__main__":
 
-    g = random_network(4)
-    draw_graph_from_adj_matrix(g, "test", with_weights=True)
+if __name__ == "__main__":
+    pass
