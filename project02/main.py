@@ -42,23 +42,17 @@ LISTA DOSTĘPNYCH KOMEND:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 """)
                 elif "-is_graphic_seq" in args:
-                    print(
-                        "----\n  Wywołaj -is_graphic_seq -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                    print("----\n  Wywołaj -is_graphic_seq -help aby zobaczyć jakich argumentów wymaga komenda\n---")
                 elif "-randomize_graph" in args:
-                    print(
-                        "----\n  Wywołaj -randomize_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                    print( "----\n  Wywołaj -randomize_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
                 elif "-largest_connected_component" in args:
-                    print(
-                        "----\n  Wywołaj -largest_connected_component -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                    print( "----\n  Wywołaj -largest_connected_component -help aby zobaczyć jakich argumentów wymaga komenda\n---")
                 elif "-random_eulerian_graph" in args:
-                    print(
-                        "----\n  Wywołaj -random_eulerian_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                    print( "----\n  Wywołaj -random_eulerian_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
                 elif "-random_k_regular_graph" in args:
-                    print(
-                        "----\n  Wywołaj -random_k_regular_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                    print("----\n  Wywołaj -random_k_regular_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
                 elif "-is_hamiltonian_graph" in args:
-                    print(
-                        "----\n  Wywołaj -is_hamiltonian_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                    print( "----\n  Wywołaj -is_hamiltonian_graph -help aby zobaczyć jakich argumentów wymaga komenda\n---")
                 else:
                     raise LackOfNecessaryArg
 
@@ -175,16 +169,14 @@ PODKOMENDY DO -is_hamiltonian_graph:
                         adj_matrix = seq_to_adj_matrix(seq)
                         if adj_matrix is None:
                             return
-                        print(
-                            '\nGraf w postaci macierzy sąsiedztwa, utworzonej na podstawie zadanego ciągu:')
+                        print('\nGraf w postaci macierzy sąsiedztwa, utworzonej na podstawie zadanego ciągu:')
                         print_matrix(adj_matrix)
 
                         ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                         if filename_out is not None:
                             draw_graph_from_adj_matrix(
                                 adj_matrix, filename_out)
-                            print(
-                                '\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                            print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
             # ------------------------------------------------------------------------------------------------------------------------------
                 elif args[0] == '-randomize_graph':
                     if seq is None or n is None:
@@ -204,8 +196,7 @@ PODKOMENDY DO -is_hamiltonian_graph:
                         if filename_out is not None:
                             draw_graph_from_incid_matrix(
                                 randomized, filename_out)
-                            print(
-                                '\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                            print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
             # ------------------------------------------------------------------------------------------------------------------------------
                 elif args[0] == '-largest_connected_component':
                     if graph is None:
@@ -229,11 +220,9 @@ PODKOMENDY DO -is_hamiltonian_graph:
                             ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                             if filename_out is not None:
                                 draw_components(graph, filename_out)
-                                print(
-                                    '\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                                print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
                         else:
-                            print(
-                                'Podano niepoprawne dane wejściowe.\n(Możliwe postacie grafu wejściowego: macierz sąsiedztwa, lista sąsiedztwa, macierz incydencji, ciąg graficzny')
+                            print('Podano niepoprawne dane wejściowe.\n(Możliwe postacie grafu wejściowego: macierz sąsiedztwa, lista sąsiedztwa, macierz incydencji, ciąg graficzny')
             # ------------------------------------------------------------------------------------------------------------------------------
                 elif args[0] == '-random_eulerian_graph':
                     if n is None:
@@ -246,8 +235,7 @@ PODKOMENDY DO -is_hamiltonian_graph:
                             ''' wygenerowanie losowego grafu Eulera o n wierzchołkach + znalezienie w nim cyklu Eulera '''
                             seq, graph, cycle = gen_random_eulerian_graph_find_cycle(
                                 n)
-                            print(
-                                "\n\nWygenerowano losowy ciąg (grafu eulerowskiego):\n{}".format(seq))
+                            print("\n\nWygenerowano losowy ciąg (grafu eulerowskiego):\n{}".format(seq))
                             print("\nGraf Eulera w postaci macierzy sąsiedztwa:")
                             print_matrix(graph)
                             print("\nCykl Eulera wygenerowanego grafu:")
@@ -258,8 +246,7 @@ PODKOMENDY DO -is_hamiltonian_graph:
                             ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                             if filename_out is not None:
                                 draw_graph_from_adj_matrix(graph, filename_out)
-                                print(
-                                    '\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                                print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
             # ------------------------------------------------------------------------------------------------------------------------------
                 elif args[0] == '-random_k_regular_graph':
                     if n is None or k is None:
@@ -270,15 +257,13 @@ PODKOMENDY DO -is_hamiltonian_graph:
                             graph = random_k_regular_graph(n, k)
                         except Exception as e:
                             return
-                        print(
-                            "\nWygenerowany losowy graf {}-regularny o {} wierchołkach:\n(macierz incydencji)".format(k, n))
+                        print("\nWygenerowany losowy graf {}-regularny o {} wierchołkach:\n(macierz incydencji)".format(k, n))
                         print_matrix(graph)
 
                         ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                         if filename_out is not None:
                             draw_graph_from_incid_matrix(graph, filename_out)
-                            print(
-                                '\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                            print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
             # ------------------------------------------------------------------------------------------------------------------------------
                 elif args[0] == '-is_hamiltonian_graph':
                     if graph is None:
@@ -291,16 +276,14 @@ PODKOMENDY DO -is_hamiltonian_graph:
                         ''' sprawdzenie czy podany graf jest hamiltonowski, jeśli tak, zwraca cykl Hamiltona '''
                         cycle = find_hamilton_cycle(copy_graph)
                         if cycle is not None:
-                            print(
-                                '\n\nPodany graf jest grafem hamiltonowskim.\nZnaleziony cykl Hamiltona: ', cycle)
+                            print('\n\nPodany graf jest grafem hamiltonowskim.\nZnaleziony cykl Hamiltona: ', cycle)
                         else:
                             print('Zadany graf nie posiada cyklu Hamiltona.')
 
                         ''' zapis reprezentacji graficznej do pliku w razie potrzeby '''
                         if filename_out is not None:
                             draw_graph_from_adj_list(graph, filename_out)
-                            print(
-                                '\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
+                            print('\nGraficzną reprezentację grafu zapisano w pliku image/' + filename_out + '.png')
                 else:
                     raise LackOfNecessaryArg
 
