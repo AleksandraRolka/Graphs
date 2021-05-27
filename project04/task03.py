@@ -32,7 +32,7 @@ def set_random_weight(adj_matrix, a = -5, b = 10):
 				adj_matrix[i][j] = tmp
 	return adj_matrix
 	
-def strongly_coherent_random_digraph(n = 6, p = 0.4):
+def strongly_coherent_random_digraph(n = 5, p = 0.4):
 	'''
 		Generuje losowy silnie spójny digraf
 		- wejście: 	n -liczba wierzchołów, p -prawdopodobienstwo wystąpienia krawedzi pomiedzy dwoma wierzchołkami (zakres [0,1])
@@ -46,8 +46,8 @@ def strongly_coherent_random_digraph(n = 6, p = 0.4):
 	
 def BellmanFord(graph,weights,v0):
 	'''
-		Znajduje najkrótsze ścieżeki od danego wierzchołka.
-		- wejście: macierz sąsiedzwta grafu skierowanego (bez wag), macierz wag grafu, wierzchołek źródłowy 
+		Znajduje najkrótsze ścieżki od danego wierzchołka.
+		- wejście: macierz sąsiedztwa grafu skierowanego (bez wag), macierz wag grafu, wierzchołek źródłowy 
 		- wyjście: wartość bool w zależności czy istnieje cykl o ujemnej wadze, lista odległóśći od wierzchołka źródłowego do pozostałych wierzchołków.
 	'''
 	edges = edges_from_adj_matrix_nodes_indexed_from_zero(graph)

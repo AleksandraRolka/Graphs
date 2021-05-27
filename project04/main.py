@@ -23,71 +23,70 @@ def main():
     if len(args) > 0:
         try:
             if len(args) == 1:
-                if "-help" in args:
+                if "help" in args:
                     print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 LISTA DOSTĘPNYCH KOMEND:
-[-help]                                         - wyświetla listę dostępnych komend
-[-random_digraph_with_probability]              - generuje losowy graf skierowany
-[-kosaraju]                                     - algorytm kosaraju - zwraca silnie spójne składowe digrafu
-[-bellmann_ford]                                - algorytm Bellmanna-Forda - zwraca macierz odległości
-[-johnson]                                      - algorytm Johnsona - zwraca macierz odległości
-*** Aby sprawdzić z jakimi argumentami wywołuje się dany program uruchom z "-help", np. "python3 main.py -kosaraju -help" ***
+[help]                                        - wyświetla listę dostępnych komend
+[random_digraph_with_probability]              - generuje losowy graf skierowany
+[kosaraju]                                     - algorytm kosaraju - zwraca silnie spójne składowe digrafu
+[bellmann_ford]                                - algorytm Bellmanna-Forda - zwraca macierz odległości
+[johnson]                                      - algorytm Johnsona - zwraca macierz odległości
+
+*** Aby sprawdzić z jakimi argumentami wywołuje się dany program uruchom z "-help", np. "python3 main.py kosaraju -help" ***
 *** Aby zapisać graficzną reprezentacje wynikowego grafu:
 [-fileout filename]                             - [filename] nazwa pliku, do którego ma zostać zapisany obraz grafu w formacie png
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 """)
-                elif "-random_digraph_with_probability" in args:
-                    print("----\n  Wywołaj -random_digraph_with_probability -help aby zobaczyć jakich argumentów wymaga komenda\n---")
-                elif "-kosaraju" in args:
-                    print("----\n  Wywołaj -kosaraju -help aby zobaczyć jakich argumentów wymaga komenda\n---")
-                elif "-bellmann_ford" in args:
-                    print("----\n  Wywołaj -bellmann_ford -help aby zobaczyć jakich argumentów wymaga komenda\n---")
-                elif "-johnson" in args:
-                    print("----\n  Wywołaj -johnson -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif "random_digraph_with_probability" in args:
+                    print("----\n  Wywołaj random_digraph_with_probability -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif "kosaraju" in args:
+                    print("----\n  Wywołaj kosaraju -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif "bellmann_ford" in args:
+                    print("----\n  Wywołaj bellmann_ford -help aby zobaczyć jakich argumentów wymaga komenda\n---")
+                elif "johnson" in args:
+                    print("----\n  Wywołaj johnson -help aby zobaczyć jakich argumentów wymaga komenda\n---")
                 else:
                     raise LackOfNecessaryArg
         
-            elif "-random_digraph_with_probability" in args and "-help" in args:
+            elif "random_digraph_with_probability" in args and "-help" in args:
                 print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-PODKOMENDY DO -random_digraph_with_probability:
-[-n n -p p]                             - generuje losowy graf skierowany o [n] wierzchołkach i [p] prawdopodobieństwie wystąpienia krawędzi
-dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w folderze graph_examples
+Wywołanie -random_digraph_with_probability:
+(-n n -p p) || [-fileout filename]       - generuje losowy graf skierowany o [n] wierzchołkach i [p] prawdopodobieństwie wystąpienia krawędzi
+                                           opcja dodatkowa -fileout - zapisze graf do pliku [filename] w folderze graph_examples
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 """)
-            elif "-kosaraju" in args and "-help" in args:
+            elif "kosaraju" in args and "-help" in args:
                  print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-PODKOMENDY DO -kosaraju:
-[-n n -p p]                             - zwraca silnie spójne skladowe dla losowego grafu skierowanego o [n] wierzchołkach i [p] prawdopodobieństwie wystąpienia krawędzi
-[-filein filename]                      - zwróci silnie spójne składowe dla grafu zapisanego w pliku [filename] w folderze graphs_examples 
-                                          (graf w pliku powinien być w postaci macierzy sąsiedztwa) 
-dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w folderze graph_examples
+Wywołanie -kosaraju:
+(-n n -p p) || [-fileout filename]              - zwraca silnie spójne skladowe dla losowego grafu skierowanego o [n] wierzchołkach i [p] prawdopodobieństwie wystąpienia krawędzi
+(-filein filename) || [-fileout filename]       - zwróci silnie spójne składowe dla grafu zapisanego w pliku [filename] w folderze graphs_examples 
+                                                  (graf w pliku powinien być w postaci macierzy sąsiedztwa) 
+                                                - dodatkowa opcja -fileout zapisze graf do pliku [filename] w folderze graph_examples
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 """)
-            elif "-bellmann_ford" in args and "-help" in args:
+            elif "bellmann_ford" in args and "-help" in args:
                 print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-PODKOMENDY DO -bellmann_ford:
-[-n n -p p -a a -b b]                   - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o [n] wierzchołkach 
-                                          i [p] prawdopodobieństwie wystąpienia krawędzi
-                                          o losowych wagach z przedziału [a, b]
-[-default]                              - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o domyślnych parametrach: [n = 6] wierzchołkach i [p = 0.8] prawdopodobieństwie
-                                          wystąpienia krawędzi o losowych wagach z przedziału [a = -5, b = 10]
-dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w folderze graph_examples
+Wywołania -bellmann_ford:
+(-n n -p p -a a -b b) || [-fileout filename]       - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o [n] wierzchołkach 
+                                                     i [p] prawdopodobieństwie wystąpienia krawędzi o losowych wagach z przedziału [a, b]
+(-default) || [-fileout filename]                  - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o domyślnych parametrach: [n = 6] wierzchołkach i [p = 0.8] prawdopodobieństwie
+                                                     wystąpienia krawędzi o losowych wagach z przedziału [a = -5, b = 10]
+                                                   - opcja dodatkowa -fileout zapisze graf do pliku [filename] w folderze graph_examples
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 """)
-            elif "-johnson" in args and "-help" in args:
+            elif "johnson" in args and "-help" in args:
                 print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
-PODKOMENDY DO -johnson:
-[-n n -p p -a a -b b]                   - znajduje najkrótsze ścieżki między parami wierzchołków dla losowego grafu skierowanego o [n] wierzchołkach 
-                                          i [p] prawdopodobieństwie wystąpienia krawędzi
-                                          o losowych wagach z przedziału [a, b]
-[-default]                              - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o domyślnych parametrach: [n = 6] wierzchołkach i [p = 0.8] prawdopodobieństwie
-                                          wystąpienia krawędzi o losowych wagach z przedziału [a = -5, b = 10]
-dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w folderze graph_examples
+Wywołania -johnson:
+(-n n -p p -a a -b b) || [-fileout filename]        - znajduje najkrótsze ścieżki między parami wierzchołków dla losowego grafu skierowanego o [n] wierzchołkach 
+                                                      i [p] prawdopodobieństwie wystąpienia krawędzi o losowych wagach z przedziału [a, b]
+(-default) || [-fileout filename]                   - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o domyślnych parametrach: [n = 6] wierzchołkach
+                                                      i [p = 0.8] prawdopodobieństwie wystąpienia krawędzi o losowych wagach z przedziału [a = -5, b = 10]
+                                                    - dodatkowa opcja -fileout zapisze graf do pliku [filename] w folderze graph_examples
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 """)
 
@@ -114,7 +113,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
                 
                 # ------------------------------------------------------------------------------------------------------------------------------  
 
-                if args[0] == '-random_digraph_with_probability':
+                if args[0] == 'random_digraph_with_probability':
                     if p is None or n is None:
                         raise LackOfNecessaryArg
                     else:
@@ -139,7 +138,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
 
                 # ------------------------------------------------------------------------------------------------------------------------------  
 
-                elif args[0] == "-kosaraju":
+                elif args[0] == "kosaraju":
                     if filename_in is None:
                         if p is None or n is None:
                             raise LackOfNecessaryArg
@@ -156,7 +155,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
 
                  # ------------------------------------------------------------------------------------------------------------------------------  
                     
-                elif args[0] == "-bellmann_ford":
+                elif args[0] == "bellmann_ford":
                     if any(item is None for item in [a,b,n,p]):
                         adj_matrix_unweighted = strongly_coherent_random_digraph()
                         adj_matrix = set_random_weight(adj_matrix_unweighted)	
@@ -185,7 +184,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
 
                 # ------------------------------------------------------------------------------------------------------------------------------  
                 
-                elif args[0] == "-johnson":
+                elif args[0] == "johnson":
                     if any(item is None for item in [a,b,n,p]):
                         adj_matrix_unweighted = strongly_coherent_random_digraph()
                         adj_matrix = set_random_weight(copy.deepcopy(adj_matrix_unweighted))
@@ -222,7 +221,7 @@ dodatkowo [-fileout filename]           - zapisze graf do pliku [filename] w fol
     
     else:
         print(
-            "Nie podano żadnych argumentów\nLista akceptowanych argumentów dostępna pod komendą [-help]")
+            "Nie podano żadnych argumentów\nLista akceptowanych argumentów dostępna pod komendą [help]")
         return
         
 
