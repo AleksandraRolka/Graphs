@@ -27,9 +27,9 @@ def main():
                     print("""
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 LISTA DOSTĘPNYCH KOMEND:
-[help]                                        - wyświetla listę dostępnych komend
+[help]                                         - wyświetla listę dostępnych komend
 [random_digraph_with_probability]              - generuje losowy graf skierowany
-[kosaraju]                                     - algorytm kosaraju - zwraca silnie spójne składowe digrafu
+[kosaraju]                                     - algorytm kosaraju - zwraca silnie spójne składowe digrafu wraz z wypisaniej tej największej
 [bellmann_ford]                                - algorytm Bellmanna-Forda - zwraca macierz odległości
 [johnson]                                      - algorytm Johnsona - zwraca macierz odległości
 
@@ -73,7 +73,7 @@ Wywołanie -kosaraju:
 Wywołania -bellmann_ford:
 (-n n -p p -a a -b b) || [-fileout filename]       - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o [n] wierzchołkach 
                                                      i [p] prawdopodobieństwie wystąpienia krawędzi o losowych wagach z przedziału [a, b]
-(-default) || [-fileout filename]                  - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o domyślnych parametrach: [n = 6] wierzchołkach i [p = 0.8] prawdopodobieństwie
+(-default) || [-fileout filename]                  - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o domyślnych parametrach: [n = 6] wierzchołkach i [p = 0.3] prawdopodobieństwie
                                                      wystąpienia krawędzi o losowych wagach z przedziału [a = -5, b = 10]
                                                    - opcja dodatkowa -fileout zapisze graf do pliku [filename] w folderze graph_examples
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ Wywołania -johnson:
 (-n n -p p -a a -b b) || [-fileout filename]        - znajduje najkrótsze ścieżki między parami wierzchołków dla losowego grafu skierowanego o [n] wierzchołkach 
                                                       i [p] prawdopodobieństwie wystąpienia krawędzi o losowych wagach z przedziału [a, b]
 (-default) || [-fileout filename]                   - znajduje najkrótsze ścieżki dla losowego grafu skierowanego o domyślnych parametrach: [n = 6] wierzchołkach
-                                                      i [p = 0.8] prawdopodobieństwie wystąpienia krawędzi o losowych wagach z przedziału [a = -5, b = 10]
+                                                      i [p = 0.3] prawdopodobieństwie wystąpienia krawędzi o losowych wagach z przedziału [a = -5, b = 10]
                                                     - dodatkowa opcja -fileout zapisze graf do pliku [filename] w folderze graph_examples
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 """)

@@ -32,7 +32,7 @@ def set_random_weight(adj_matrix, a = -5, b = 10):
 				adj_matrix[i][j] = tmp
 	return adj_matrix
 	
-def strongly_coherent_random_digraph(n = 5, p = 0.4):
+def strongly_coherent_random_digraph(n = 6, p = 0.3):
 	'''
 		Generuje losowy silnie spójny digraf
 		- wejście: 	n -liczba wierzchołów, p -prawdopodobienstwo wystąpienia krawedzi pomiedzy dwoma wierzchołkami (zakres [0,1])

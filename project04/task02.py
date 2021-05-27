@@ -84,9 +84,14 @@ def print_comp(comp):
         if str(comp[i]) not in groups:
             groups[str(comp[i])] = [i+1]
         else:
-            groups[str(comp[i])].append(i+1)            
+            groups[str(comp[i])].append(i+1)
+    lenghts = [len(i) for i in groups.values()]
+    max_len = max(lenghts)             
     for key, value in groups.items():
-        print("Silnie spójna składowa : " + str(value))
+        if len(value) == max_len:
+            print("Największa silnie spójna składowa : " + str(value))
+        else:
+            print("Silnie spójna składowa : " + str(value))
 
 
 
