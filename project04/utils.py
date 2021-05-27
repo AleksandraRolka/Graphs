@@ -78,7 +78,7 @@ def draw_graph(nodes_num, edges, fname, colors = None, with_weights = False):
 		labels = {}
 		for key, value in l.items():
 			labels[(key[0],key[1])] = value
-		nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=15, label_pos=0.6)
+		nx.draw_networkx_edge_labels(G, positions, edge_labels=labels, font_size=15, label_pos=0.4)
 	
 	plt.draw()
 	fig.set_size_inches(12, 12)
