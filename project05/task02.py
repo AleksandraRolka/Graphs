@@ -108,5 +108,21 @@ def ford_fulkerson(G):
     return f, fmax
 
 
+def create_adj_matrix_from_flow_dict(f, graph_size):
+    """
+        Funkcja tworząca macierz przepływu na podstawie
+        przekazanego słownika zawierającego ten przepływ\n
+        graph_size - rozmiar macierzy sąsiedztwa grafu o przepływie f
+    """
+    keys = list(f.keys())
+    values = list(f.values())
+    flow_adj_matrix = [[0 for _ in range(graph_size)]
+                       for _ in range(graph_size)]
+
+    for i in range(len(keys)):
+        flow_adj_matrix[keys[i][0]][keys[i][1]] = values[i]
+    return flow_adj_matrix
+
+
 if __name__ == "__main__":
     pass

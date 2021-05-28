@@ -33,6 +33,24 @@ def draw_graph(nodes_num, layers, edges, flow=None, fname="test", colors=None, w
     fname = 'images/' + fname
     if colors == None:
         colors = '#b3ccff'
+
+    # Kolorowanie krawędzi na czerwono oraz ich pogrubianie, jeśli przepływ jest niezerowy
+    edges_colors = []
+    edges_widths = []
+    if flow != None:
+        for k in range(len(edges)):
+            i = edges[k][0] - 1
+            j = edges[k][1] - 1
+            if flow[(i, j)] != 0:
+                edges_colors.append('red')
+                edges_widths.append(2)
+            else:
+                edges_colors.append('black')
+                edges_widths.append(1)
+    else:
+        edges_colors.append('black')
+        edges_widths.append(1)
+
     # wyliczenie kąta do równomiernego rozłożenia wierzchołków na okręgu
     alpha = (2 * PI) / nodes_num
     # promień okręgu
@@ -66,7 +84,6 @@ def draw_graph(nodes_num, layers, edges, flow=None, fname="test", colors=None, w
 
     j = 0
     for i in range(len(layers)):
-        # umiesz
         for v in range(len(layers[i])):
             j += 1
             positions.update({(j): (100 + i * 50, 100 + v * 50)})
@@ -81,7 +98,7 @@ def draw_graph(nodes_num, layers, edges, flow=None, fname="test", colors=None, w
     # wyrysowanie wierzchołków, krawędzi grafu na kole i zapis do pliku .png
     fig = plt.figure()
     nx.draw(G, arrows=True, **options, pos=positions, node_size=nodesize, node_color=colors,
-            font_size=nodesize / 85, labels=labelsdicts, with_labels=True)
+            font_size=nodesize / 85, labels=labelsdicts, with_labels=True,  edge_color=edges_colors, width=edges_widths)
 
     for i in range(len(loop_edges)):
         G.add_edge(loop_edges[i][0], loop_edges[i][1], weight=loop_edges[i][2])
@@ -98,7 +115,7 @@ def draw_graph(nodes_num, layers, edges, flow=None, fname="test", colors=None, w
             else:
                 labels[(key[0], key[1])] = value
         nx.draw_networkx_edge_labels(
-            G, positions, edge_labels=labels, font_size=15, label_pos=0.6)
+            G, positions, edge_labels=labels, font_size=15, label_pos=0.35)
 
     plt.draw()
     fig.set_size_inches(12, 12)

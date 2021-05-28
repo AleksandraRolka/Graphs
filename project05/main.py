@@ -19,7 +19,7 @@ def main():
 Lista dostępnych komend:
 [-help]              - wyświetla listę dostępnych komend
 [-n n]               - liczba warstw pośrednich sieci przepływowej, n >= 2
-                      (argument wymagany)
+                       (argument wymagany)
 [-fileout1 filename] - plik, do którego ma zostać zapisany obraz losowej sieci 
                        przepływowej (argument opcjonalny)
 [-fileout2 filename] - plik, do którego ma zostać zapisany obraz sieci z ustalonym
@@ -77,7 +77,10 @@ python3 main.py -n 4 -fileout1 f1 -fileout2 f2
         print("\nObliczanie maksymalnego przepływu dla wylosowanej sieci...")
         f, fmax = ford_fulkerson(g)
         print("Wartość maksymalnego przepływu: fmax =", fmax)
-        if filename_out2 != None:
+        if filename_out2 == None:
+            print("\nMacierz przepływu wylosowanej sieci:")
+            print_matrix(create_adj_matrix_from_flow_dict(f, len(g)))
+        else:
             draw_graph_from_adj_matrix(
                 g, layers, flow=f, fname=filename_out2, with_weights=True)
             print("Obraz sieci z ustalonym maksymalnym przepływem zapisano w pliku: images/",

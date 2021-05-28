@@ -133,5 +133,4 @@ def random_network(n):
 
 
 if __name__ == "__main__":
-    adj_matrix, layers = random_network(2)
-    draw_graph_from_adj_matrix(adj_matrix, layers, with_weights=True)
+    pass
