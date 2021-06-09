@@ -103,7 +103,13 @@ Wywołania -johnson:
                     n = int(args[idx+1])
                 if "-p" in args:
                     idx = args.index("-p")
-                    p = float(args[idx+1])     
+                    p = float(args[idx+1])
+                if "-a" in args:
+                    idx = args.index("-a")
+                    a = int(args[idx+1])
+                if "-b" in args:
+                    idx = args.index("-b")
+                    b = float(args[idx+1])   
                 if "-filein" in args:
                     idx = args.index("-filein")
                     filename_in = args[idx+1]
