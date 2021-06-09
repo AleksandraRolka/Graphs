@@ -32,14 +32,12 @@ def set_random_weight(adj_matrix, a = -5, b = 10):
 				adj_matrix[i][j] = tmp
 	return adj_matrix
 	
-def strongly_coherent_random_digraph(n = None, p = 0.3):
+def strongly_coherent_random_digraph(n = 6, p = 0.3):
 	'''
 		Generuje losowy silnie spójny digraf
 		- wejście: 	n -liczba wierzchołów, p -prawdopodobienstwo wystąpienia krawedzi pomiedzy dwoma wierzchołkami (zakres [0,1])
 		- wyjście:	graf skierowany w popstaci macierzy sąsiedztwa
 	'''
-	if n is None:
-		n=6
 	adj_matrix = random_digraph_with_probability(n,p)
 	while not only_one_comp(adj_matrix):
 		adj_matrix = random_digraph_with_probability(n,p)
